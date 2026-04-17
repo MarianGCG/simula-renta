@@ -1,0 +1,1219 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simulación de Renta (Nuevo)</title>
+
+{% load static %}
+
+<style>
+body{
+  font-family: Arial, sans-serif;
+  background:#f0f2f7;
+  padding:20px;
+  font-size:14px;
+
+}
+
+.container{
+  max-width:1000px;
+  margin:auto;
+  padding:0 12px;   /* 👈 clave */
+}
+
+h2{
+  margin-bottom:20px;
+  font-size:24px;   /* probá 24 o 26 */
+  font-weight:700;
+}
+
+/* FILA */
+.escenario-row{
+  display:flex;
+  gap:16px;
+  margin-bottom:14px;
+  align-items:stretch;
+}
+
+/* INPUT */
+.escenario-input{
+  width:40%;
+  background:#fff;
+  border:2px solid #1a3a6b;
+  border-radius:10px;
+  padding:12px;
+}
+
+.sc-num{
+  font-size:16px;
+  color:#1a3a6b;
+  margin-bottom:8px;
+  font-weight:bold;
+  font-weight:600;
+  min-width:110px;   /* 👈 alinea todos iguales */
+}
+
+
+.sc-inputs{
+  display:grid;
+  grid-template-columns: 110px 70px;
+  gap:20px;
+
+}
+
+
+
+.sc-inputs .field{
+  flex:1;
+}
+
+.field label{
+  font-size:16px;
+  display:block;
+  margin-bottom:2px;
+  white-space: nowrap;
+
+}
+
+.field input{
+  width:100%;
+  padding:6px 8px;
+  height:34px;  
+  margin-bottom:6px;
+  border:1px solid #ccc;
+  border-radius:6px;
+  font-size:16px;
+}
+
+/* RESULTADO */
+
+
+.res-item{
+  display:flex;
+  flex-direction:column;
+  min-width:90px;
+}
+
+.res-content{
+  display:flex;
+  gap:20px;
+  align-items:center;
+  width:fit-content;     /* 👈 CLAVE TOTAL */
+}
+
+
+.mensual{
+  padding-left:15px;
+  border-left:1px solid #d1d5db;
+}
+
+
+
+.escenario-resultado{
+  width:auto;              /* 👈 clave */
+  background:#ffffff;
+  color:#1a3a6b;
+  border-radius:12px;
+  padding:16px;
+
+  display:none;
+  opacity:0;
+
+  display:grid;
+  grid-template-columns: repeat(4, auto) 1fr;
+  align-items:center;
+  gap:25px;
+
+  transition:opacity 0.3s ease;
+  box-shadow:0 4px 10px rgba(0,0,0,0.05);
+  border:2px solid #1a3a6b;
+  min-width:380px;         /* opcional para que no quede muy chica */
+  width:fit-content;       /* 👈 la mejor opción */
+
+}
+
+
+
+
+
+.res-block{
+  display:flex;
+  gap:20px;              /* 👈 más pegado */
+}
+
+.res-title{
+  font-size:11px;
+  color:#6b7280;   /* gris elegante */
+}
+
+
+.res-value{
+  font-size:18px;
+  font-weight:600;
+  color:#1a3a6b;
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+}
+
+.res-big{
+  font-size:18px;        /* 👈 igual tamaño */
+  font-weight:600;
+  color:#1a3a6b;
+}
+
+
+
+button{
+  margin-top:20px;
+  padding:10px 20px;
+  background:#1a3a6b;
+  color:#fff;
+  border:none;
+  border-radius:8px;
+  cursor:pointer;
+}
+
+
+
+
+.acciones{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-top:20px;
+  padding:0 50px;   /* probá entre 8px y 16px */
+}
+
+
+.container{
+  padding:0 12px;
+  max-width:1000px;   /* 👈 igual que .container */
+}
+
+.btn-calc{
+  padding:10px 20px;
+  background:#1a3a6b;
+  color:#fff;
+  border:none;
+  border-radius:8px;
+  cursor:pointer;
+}
+
+.btn-print{
+  padding:10px 20px;
+  background:#4b5563;
+  color:#fff;
+  border:none;
+  border-radius:8px;
+  cursor:pointer;
+  display:none;   /* 👈 oculto */
+  gap:0px;  
+  margin-left:auto;   /* 👈 ESTA es la clave */
+
+}
+
+.esc-header{
+  display:flex;
+  align-items:center;
+  gap:10px;   /* 👈 controla distancia */
+}
+
+.header-box{
+  box-shadow:0 4px 10px rgba(0,0,0,0.08);
+  background:#243f6b;          /* azul oscuro */
+  color:#fff;
+  border-radius:12px;
+  width:100%;
+  max-width:1000px;   /* 👈 igual que .container */  
+  padding:18px 20px;
+  margin-bottom:20px;
+  text-align:center;   /* 👈 centra todo */
+}
+
+
+.header-title{
+  font-size:20px;
+  font-weight:700;
+  margin-bottom:4px;
+}
+
+.header-subtitle{
+  font-size:13px;
+  opacity:0.85;
+}
+
+.res-wrapper{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  width:100%;
+}
+
+.toggle-tabla{
+  background:none;
+  border:none;
+  color:#1a3a6b;
+  font-size:13px;
+  cursor:pointer;
+  white-space:nowrap;
+}
+
+.toggle-tabla:hover{
+  text-decoration:underline;
+}
+.tabla-wrap{
+  display:none;
+  margin-top:10px;
+}
+
+
+.panel-tabla{
+  position:fixed;
+  top:120px;
+
+  /* 👇 oculto fuera de pantalla */
+  
+  right:-500px;
+  width:380px;
+  max-height:600px;
+
+  background:#fff;
+  box-shadow:-4px 0 12px rgba(0,0,0,0.15);
+  transition:right 0.3s ease;
+  z-index:999;
+
+  display:flex;
+  flex-direction:column;
+}
+
+
+
+
+.panel-tabla.open{
+  
+  right:calc((100vw - 1000px)/2 - 400px);
+}
+
+
+.panel-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:14px;
+  background:#1a3a6b;
+  color:#fff;
+  font-weight:600;
+}
+
+.panel-header button{
+  background:none;
+  border:none;
+  color:#fff;
+  font-size:18px;
+  cursor:pointer;
+}
+
+#panel-contenido{
+  padding:12px;
+  overflow-y:auto;   /* 👈 vertical SIEMPRE */
+  max-height:420px;   /* 👈 aprox 16 filas */
+   overflow-x:hidden;
+}
+
+#panel-contenido table thead{
+  position:sticky;
+  top:0;
+  background:#fff;
+}
+
+/* tabla */
+#panel-contenido table{
+  width:100%;
+  border-collapse:collapse;
+  font-size:12px;
+}
+
+#panel-contenido th,
+#panel-contenido td{
+  padding:6px;
+  border-bottom:1px solid #ddd;
+  text-align:right;
+}
+
+#panel-contenido th:first-child,
+#panel-contenido td:first-child{
+  text-align:center;
+}
+
+
+.negative{
+  color:#dc2626;
+  font-weight:600;
+  background:#fee2e2;   /* rojo suave de fondo */
+  border-radius:4px;
+}
+
+
+
+.negative-row{
+  background:#fee2e2;   /* rojo suave */
+}
+
+.negative-row td{
+  color:#991b1b;        /* rojo más oscuro para texto */
+  font-weight:500;
+}
+
+.tabs{
+  display:flex;
+  gap:10px;
+  margin-bottom:20px;
+  justify-content:center;   /* 👈 CLAVE */
+}
+
+.tab{
+  padding:10px 16px;
+  border:none;
+  background:#d1d5db;
+  border-radius:8px;
+  cursor:pointer;
+  min-width:160px;     /* 👈 mismo tamaño ambas */
+  text-align:center;  
+  color:#374151;        /* 👈 mejora legibilidad */
+}
+
+.tab.active{
+  background:#1a3a6b;
+  color:#fff;
+}
+
+.tab-content{
+  display:none;
+}
+
+.tab-content.active{
+  display:block;
+}
+#tab-capital label{
+  font-size:13px;
+  color:#374151;
+}
+
+#tab-capital select,
+#tab-capital input{
+  padding:6px 8px;
+  border-radius:6px;
+  border:1px solid #ccc;
+}
+
+
+
+.capital-card{
+  background:#fff;
+  border:2px solid #1a3a6b;
+  border-radius:12px;
+  padding:20px;
+
+  width:fit-content;
+  margin:30px auto;   /* 👈 CENTRADO */
+
+  box-shadow:0 4px 10px rgba(0,0,0,0.05);
+
+  display:flex;
+  flex-direction:column;
+  gap:16px;
+}
+
+.capital-row{
+  display:flex;
+  align-items:center;
+  gap:20px;
+  justify-content:center;   /* 👈 centrado horizontal */
+}
+
+.capital-row .mensual{
+  padding-left:15px;
+  border-left:1px solid #d1d5db;
+}
+
+#tabla-capital{
+  display:flex;
+  justify-content:center;
+  margin-top:20px;
+}
+
+#tabla-capital table{
+  width:auto;
+  border-collapse:collapse;
+  font-size:12px;
+  background:#fff;
+  box-shadow:0 4px 10px rgba(0,0,0,0.05);
+  border-radius:8px;
+  overflow:hidden;
+}
+
+#tabla-capital th{
+  background:#f3f4f6;
+  font-weight:600;
+  color:#374151;
+}
+
+#tabla-capital th,
+#tabla-capital td{
+  padding:6px 10px;
+  border-bottom:1px solid #e5e7eb;
+  text-align:right;
+}
+
+#tabla-capital td:first-child,
+#tabla-capital th:first-child{
+  text-align:center;
+}
+
+#tabla-capital tr:last-child td{
+  border-bottom:none;
+}
+
+
+.en-construccion{
+  margin-top:40px;
+  text-align:center;
+  font-size:14px;
+  color:#6b7280;
+  margin-bottom:30px;
+  background:#fff;
+  border:2px dashed #9ca3af;
+  border-radius:8px;
+
+  padding:20px;
+  width:fit-content;
+  margin-left:auto;
+  margin-right:auto;
+
+  box-shadow:0 4px 10px rgba(0,0,0,0.05);
+}
+
+
+
+</style>
+
+</head>
+<body>
+
+<div class="container">
+
+<div class="tabs">
+  <button class="tab active" onclick="cambiarTab('capital')">Capital inicial</button>
+  <button class="tab" onclick="cambiarTab('renta')">Simulación de renta</button>
+</div>
+
+
+<!-- PESTAÑA CAPITAL INICIAL -->
+
+<div id="tab-capital" class="tab-content active">
+  <div class="header-box">
+    <div class="header-title">Capital Inicial</div>
+    <div class="header-subtitle"></div>
+  </div>
+
+
+  <div style="
+    display:flex;
+    gap:20px;
+    margin-bottom:20px;
+    justify-content:center;   /* 👈 centra */
+    align-items:flex-end;     /* 👈 alinea prolijo */
+  ">
+
+
+    <div>
+      <label>Retiro mensual</label><br>
+      <select id="combo-retiro"></select>
+    </div>
+
+    <div>
+      <label>Tasa interés (%)</label><br>
+      <input type="number" id="tasa" value="4.75" step="0.01">
+    </div>
+
+  </div>
+ 
+  <div id="resultado-capital"></div>
+  <div id="tabla-capital" style="margin-top:20px;"></div>
+
+
+</div>
+
+
+<div id="tab-renta" class="tab-content">
+
+  <div class="header-box">
+    <div class="header-title">Simulación de renta</div>
+  </div>
+
+  <!-- 👇 CARTEL -->
+  <div id="renta-placeholder" class="en-construccion">
+    🚧 Página en construcción
+  </div>
+
+  <!-- 👇 TODO TU CONTENIDO (envuelto, no borrado) -->
+  <div id="renta-contenido">
+
+      <!-- ESCENARIO 1 -->
+      <div class="escenario-row">
+          <div class="escenario-input">
+          <div class="esc-header">
+              <div class="sc-num">Escenario 1</div>
+              <div class="sc-inputs">
+                  <div class="field">
+                      <label>Capital inicial</label>
+                      <input type="number" class="sc-capital" value="85000">
+                  </div>
+                  <div class="field">
+                      <label>Años de retiro</label>
+                      <input type="number" class="sc-anios" value="1">
+                  </div>
+              </div>
+          </div>
+          </div>
+          <div class="escenario-resultado" id="res-1"></div>
+      </div>
+
+      <!-- ESCENARIO 2 -->
+      <div class="escenario-row">
+          <div class="escenario-input">
+          <div class="esc-header">
+              <div class="sc-num">Escenario 2</div>
+              <div class="sc-inputs">
+                  <div class="field">
+                      <label>Capital inicial</label>
+                      <input type="number" class="sc-capital" value="45000">
+                  </div>
+                  <div class="field">
+                      <label>Años de retiro</label>
+                      <input type="number" class="sc-anios" value="1">
+                  </div>
+              </div>
+          </div>
+          </div>
+          <div class="escenario-resultado" id="res-2"></div>
+      </div>
+
+      <!-- ESCENARIO 3 -->
+      <div class="escenario-row">
+          <div class="escenario-input">
+          <div class="esc-header">
+              <div class="sc-num">Escenario 3</div>
+              <div class="sc-inputs">
+                  <div class="field">
+                      <label>Capital inicial</label>
+                      <input type="number" class="sc-capital" value="41000">
+                  </div>
+                  <div class="field">
+                      <label>Años de retiro</label>
+                      <input type="number" class="sc-anios" value="1">
+                  </div>
+              </div>
+          </div>
+          </div>
+          <div class="escenario-resultado" id="res-3"></div>
+      </div>
+
+      <!-- ESCENARIO 4 -->
+      <div class="escenario-row">
+          <div class="escenario-input">
+          <div class="esc-header">
+              <div class="sc-num">Escenario 4</div>
+              <div class="sc-inputs">
+                  <div class="field">
+                      <label>Capital inicial</label>
+                      <input type="number" class="sc-capital" value="41000">
+                  </div>
+                  <div class="field">
+                      <label>Años de retiro</label>
+                      <input type="number" class="sc-anios" value="1">
+                  </div>
+              </div>
+          </div>
+          </div>
+          <div class="escenario-resultado" id="res-4"></div>
+      </div>
+
+      <div class="acciones">
+        <button onclick="window.print()" class="btn-print">
+        🖨 Imprimir
+        </button>
+      </div>
+
+  </div> <!-- 👈 cierre de renta-contenido -->
+
+</div>
+
+
+</div>
+
+
+
+
+<script>
+
+
+
+let calculando = false;
+let resultadosActuales = [];
+
+
+
+// CSRF (importante para Django)
+function getCsrfToken() {
+  return document.cookie.split(';')
+    .map(c => c.trim())
+    .find(c => c.startsWith('csrftoken='))
+    ?.split('=')[1] || '';
+}
+
+function fmt(n){
+  return '$' + Math.round(n).toLocaleString('es-AR');
+}
+
+async function calcular(){
+
+  calculando = true;
+
+  const escenarios = [];
+
+
+
+  document.querySelectorAll('.escenario-row').forEach(row => {
+
+  const capital = row.querySelector('.sc-capital')?.value;
+  const anios = row.querySelector('.sc-anios')?.value;
+
+  if (capital && anios) {
+      escenarios.push({
+      capital: parseFloat(capital),
+      anios: parseInt(anios)
+      });
+  }
+
+  });
+
+
+
+
+  try {
+    const resp = await fetch('/calcular/',{
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json',
+        'X-CSRFToken': getCsrfToken()
+      },
+      body: JSON.stringify({
+        tasa_anual:0.05,
+        perfil:'Moderado',
+        escenarios
+      })
+    });
+
+    const data = await resp.json();
+    resultadosActuales = data.escenarios;
+
+    data.escenarios.forEach((esc, idx)=>{
+      const container = document.getElementById(`res-${idx+1}`);
+
+      container.style.display = 'flex';
+      setTimeout(() => container.style.opacity = '1', 50);
+
+
+
+      container.innerHTML = `
+      <div class="res-wrapper">
+
+        <div class="res-content">
+
+          <div class="res-item">
+            <div class="res-title">Capital</div>
+            <div class="res-value">${fmt(esc.capital)}</div>
+          </div>
+
+          <div class="res-item mensual">
+            <div class="res-title">Años</div>
+            <div class="res-value">${esc.anios}</div>
+          </div>
+
+          <div class="res-item mensual">
+            <div class="res-title">Retiro anual</div>
+            <div class="res-value">${fmt(esc.retiro_anual)}</div>
+          </div>
+
+          <div class="res-item mensual">
+            <div class="res-title">Retiro mensual</div>
+            <div class="res-value">${fmt(esc.retiro_mensual)}</div>
+          </div>
+
+        </div>
+
+        <!-- BOTÓN -->
+        <button class="toggle-tabla" onclick='abrirPanelDesdeIndice(${idx})'>
+          ▶ Ver años
+        </button>
+
+
+      </div>
+
+      <!-- TABLA -->
+      <div class="tabla-wrap" id="tabla-${idx}">
+        <table>
+          <thead>
+            <tr>
+              <th>Año</th>
+              <th>Capital inicio</th>
+              <th>Interés</th>
+              <th>Retiro anual</th>
+              <th>Capital fin</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${esc.tabla.map(row => `
+              <tr>
+                <td>${row.anio}</td>
+                <td class="${row.capital_inicio < 0 ? 'negative' : ''}">${fmt(row.capital_inicio)}</td>
+                <td class="${row.interes < 0 ? 'negative' : ''}">${fmt(row.interes)}</td>
+                <td>${fmt(row.retiro_anual)}</td>
+                <td class="${row.capital_fin < 0 ? 'negative' : ''}">${fmt(row.capital_fin)}</td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+      </div>
+      `;
+
+
+
+
+    });
+
+    document.querySelector('.btn-print').style.display = 'flex';
+    calculando = false;
+    
+  } catch (e) {
+    alert('Error al calcular');
+    console.error(e);
+  }
+
+  
+}
+
+
+function toggleTabla(id, btn){
+  const el = document.getElementById(id);
+
+  if(el.style.display === 'none' || el.style.display === ''){
+    el.style.display = 'block';
+    btn.innerHTML = '▼ Ocultar';
+  }else{
+    el.style.display = 'none';
+    btn.innerHTML = '▶ Ver años';
+  }
+}
+
+
+function abrirPanel(tabla){
+
+  const panel = document.getElementById('panel-tabla');
+  const cont = document.getElementById('panel-contenido');
+
+  // 🔥 SIEMPRE actualiza contenido
+  cont.innerHTML = `
+    <table>
+      <thead>
+        <tr>
+          <th>Año</th>
+          <th>Capital inicio</th>
+          <th>Interés</th>
+          <th>Retiro</th>
+          <th>Capital fin</th>
+        </tr>
+      </thead>
+      <tbody>
+
+        ${tabla.map(row => `
+          <tr class="${row.capital_fin < 0 ? 'negative-row' : ''}">
+            <td>${row.anio}</td>
+            <td>${fmt(row.capital_inicio)}</td>
+            <td>${fmt(row.interes)}</td>
+            <td>${fmt(row.retiro_anual)}</td>
+            <td class="${row.capital_fin < 0 ? 'negative' : ''}">
+              ${fmt(row.capital_fin)}
+            </td>
+
+          </tr>
+        `).join('')}
+      </tbody>
+    </table>
+  `;
+
+  // 🔥 SI YA ESTÁ ABIERTO, IGUAL refresca (esto es lo que te faltaba)   // 
+  panel.classList.add('open');
+  
+}
+
+
+function cerrarPanel(){
+  document.getElementById('panel-tabla').classList.remove('open');
+}
+
+window.onload = () => {
+  document.getElementById('panel-tabla').classList.remove('open');
+}
+
+
+let ultimaEjecucion = 0;
+
+function calcularWrapper(){
+  const ahora = Date.now();
+  if(ahora - ultimaEjecucion < 300) return;
+
+  ultimaEjecucion = ahora;
+
+  document.getElementById('panel-tabla').classList.remove('open');
+  calcular();
+}
+
+
+
+
+
+document.querySelectorAll('.sc-capital, .sc-anios').forEach(input => {
+
+  input.addEventListener('keydown', function(e){
+    if(e.key === 'Enter'){
+      e.preventDefault();
+      calcularWrapper();
+    }
+  });
+
+  input.addEventListener('blur', calcularWrapper);
+
+});
+
+
+
+
+const inputsOrdenados = Array.from(
+  document.querySelectorAll('.sc-capital, .sc-anios')
+);
+
+inputsOrdenados.forEach((input, index) => {
+
+  input.addEventListener('keydown', function(e){
+
+    if(e.key === 'Tab'){
+      e.preventDefault();
+
+      let siguiente;
+
+      if(e.shiftKey){
+        // SHIFT + TAB (hacia atrás)
+        siguiente = index === 0 
+          ? inputsOrdenados.length - 1 
+          : index - 1;
+      } else {
+        // TAB normal (hacia adelante)
+        siguiente = index === inputsOrdenados.length - 1 
+          ? 0 
+          : index + 1;
+      }
+
+      inputsOrdenados[siguiente].focus();
+    }
+
+  });
+
+});
+
+
+
+function abrirPanelDesdeIndice(idx){
+
+  // si está calculando, esperamos y reintentamos
+  if(calculando){
+    setTimeout(() => abrirPanelDesdeIndice(idx), 200);
+    return;
+  }
+
+  if(!resultadosActuales[idx]) return;
+
+  abrirPanel(resultadosActuales[idx].tabla);
+}
+
+function cambiarTab(tab){
+
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+
+  if(tab === 'capital'){
+    document.querySelectorAll('.tab')[0].classList.add('active');
+    document.getElementById('tab-capital').classList.add('active');
+
+    initCapital();
+    calcularCapital();
+
+  }else{
+    document.querySelectorAll('.tab')[1].classList.add('active');
+    document.getElementById('tab-renta').classList.add('active');
+
+    initRenta();   // 👈 🔥 CLAVE
+  }
+
+  document.getElementById('panel-tabla').classList.remove('open');
+}
+
+
+function calcularCapital(){
+
+  const idx = document.getElementById("combo-retiro").value;
+  if(idx === "") return;
+  const combo = combos[idx];
+  if(!combo) return;
+  const tasa = parseFloat(document.getElementById("tasa").value) / 100;
+  const cont = document.getElementById("resultado-capital");
+
+  let html = `<div class="capital-card">`;
+
+  combo.anios.forEach(anio => {
+
+    const r = tasa / 12;
+    const n = anio * 12;
+
+    let capital;
+
+    if(r === 0){
+      capital = combo.retira * n;
+    }else{
+      capital = combo.retira * (1 - Math.pow(1 + r, -n)) / r;
+    }
+
+    html += `
+      <div class="capital-row">
+
+        <div class="res-item mensual">
+          <div class="res-title">Retiro mensual</div>
+          <div class="res-value">$${combo.retira.toLocaleString('es-AR')}</div>
+        </div>
+
+        <div class="res-item mensual">
+          <div class="res-title">Años</div>
+          <div class="res-value">${anio}</div>
+        </div>
+
+        <div class="res-item">
+          <div class="res-title">Capital</div>
+          <div class="res-value">$${Math.round(capital).toLocaleString('es-AR')}</div>
+        </div>
+
+        <button class="toggle-tabla"
+          onclick="mostrarDetalle(${capital}, ${combo.retira}, ${tasa}, ${anio})">
+          ▶ Detalle años
+        </button>
+
+      </div>
+    `;
+  });
+
+  html += `</div>`;
+
+  cont.innerHTML = html;
+
+
+  // 👇 mostrar automáticamente el primero
+  if(combo.anios.length > 0){
+
+    const anio = combo.anios[0];
+
+    const r = tasa / 12;
+    const n = anio * 12;
+
+    let capital;
+
+    if(r === 0){
+      capital = combo.retira * n;
+    }else{
+      capital = combo.retira * (1 - Math.pow(1 + r, -n)) / r;
+    }
+
+    mostrarDetalle(capital, combo.retira, tasa, anio);
+  }
+
+}
+
+
+
+function initCapital(){
+
+  const combo = document.getElementById("combo-retiro");
+  const tasaInput = document.getElementById("tasa");
+
+  if(!combo || !tasaInput) return;
+
+  combo.addEventListener("change", calcularCapital);
+
+  tasaInput.addEventListener("blur", calcularCapital);
+
+  tasaInput.addEventListener("keydown", e=>{
+    if(e.key === "Enter"){
+      calcularCapital();
+    }
+  });
+
+}
+
+
+
+const combos = [
+  {nombre:"500 en 5", retira:500, anios:[5]},
+  {nombre:"500 en 10", retira:500, anios:[10]},
+  {nombre:"500 en 15", retira:500, anios:[15]},
+  {nombre:"500 en 20", retira:500, anios:[20]},
+  {nombre:"500 en 5/10/15/20", retira:500, anios:[5,10,15,20]},
+
+  {nombre:"800 en 5", retira:800, anios:[5]},
+  {nombre:"800 en 10", retira:800, anios:[10]},
+  {nombre:"800 en 15", retira:800, anios:[15]},
+  {nombre:"800 en 20", retira:800, anios:[20]},
+  {nombre:"800 en 5/10/15/20", retira:800, anios:[5,10,15,20]},
+
+  {nombre:"1000 en 5", retira:1000, anios:[5]},
+  {nombre:"1000 en 10", retira:1000, anios:[10]},
+  {nombre:"1000 en 15", retira:1000, anios:[15]},
+  {nombre:"1000 en 20", retira:1000, anios:[20]},
+  {nombre:"1000 en 5/10/15/20", retira:1000, anios:[5,10,15,20]},
+  
+  {nombre:"1500 en 5", retira:1500, anios:[5]},
+  {nombre:"1500 en 10", retira:1500, anios:[10]},
+  {nombre:"1500 en 15", retira:1500, anios:[15]},
+  {nombre:"1500 en 20", retira:1500, anios:[20]},
+  {nombre:"1500 en 5/10/15/20", retira:1500, anios:[5,10,15,20]},
+
+  {nombre:"2000 en 5", retira:2000, anios:[5]},
+  {nombre:"2000 en 10", retira:2000, anios:[10]},
+  {nombre:"2000 en 15", retira:2000, anios:[15]},
+  {nombre:"2000 en 20", retira:2000, anios:[20]},
+  {nombre:"2000 en 5/10/15/20", retira:2000, anios:[5,10,15,20]}
+
+];
+
+
+function initRenta(){
+
+  document.querySelectorAll('.sc-capital, .sc-anios').forEach(input => {
+
+    input.addEventListener('keydown', function(e){
+      if(e.key === 'Enter'){
+        e.preventDefault();
+        calcularWrapper();
+      }
+    });
+
+    input.addEventListener('blur', calcularWrapper);
+
+  });
+
+}
+
+
+function generarTablaCapital(capitalInicial, retiroMensual, tasa, anios){
+
+  let capital = capitalInicial;
+
+  let html = `
+    <table>
+      <thead>
+        <tr>
+          <th>Año</th>
+          <th>Capital inicio</th>
+          <th>Interés</th>
+          <th>Retiro</th>
+          <th>Capital fin</th>
+        </tr>
+      </thead>
+      <tbody>
+  `;
+
+  for(let i=1; i<=anios; i++){
+
+    const interes = capital * tasa;
+    const retiro = retiroMensual * 12;
+    const capitalFin = capital + interes - retiro;
+
+    html += `
+      <tr class="${capitalFin < 0 ? 'negative-row' : ''}">
+        <td>${i}</td>
+        <td>$${Math.round(capital).toLocaleString('es-AR')}</td>
+        <td>$${Math.round(interes).toLocaleString('es-AR')}</td>
+        <td>$${Math.round(retiro).toLocaleString('es-AR')}</td>
+        <td class="${capitalFin < 0 ? 'negative' : ''}">
+          $${Math.round(capitalFin).toLocaleString('es-AR')}
+        </td>
+      </tr>
+    `;
+
+    capital = capitalFin;
+  }
+
+  html += "</tbody></table>";
+
+  document.getElementById("tabla-capital").innerHTML = html;
+}
+
+
+
+function mostrarDetalle(capital, retiro, tasa, anios){
+  generarTablaCapital(capital, retiro, tasa, anios);
+}
+
+
+
+window.addEventListener("DOMContentLoaded", () => {
+
+  const comboSelect = document.getElementById("combo-retiro");
+  if (!comboSelect) return;
+
+  comboSelect.innerHTML = "";   // 👈 limpia antes
+  
+  combos.forEach((c, i)=>{
+    const opt = document.createElement("option");
+    opt.value = i;
+    opt.textContent = c.nombre;
+    comboSelect.appendChild(opt);
+  });
+
+  comboSelect.selectedIndex = 0;
+
+  initCapital();
+  calcularCapital();
+  controlarRenta();
+
+});
+
+
+const MODO_RENTA_ACTIVO = false;
+
+function controlarRenta(){
+
+  const placeholder = document.getElementById("renta-placeholder");
+  const contenido = document.getElementById("renta-contenido");
+
+  placeholder.style.display = "block";
+  contenido.style.display = "none";
+
+  cerrarPanel();
+}
+
+
+
+</script>
+
+</body>
+</html>
