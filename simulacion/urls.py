@@ -1,4 +1,6 @@
-from django.shortcuts import render
+from django.urls import path
+from .views import index
 
-def index(request):
-    return render(request, 'index_nuevo.html')
+urlpatterns = [
+    path('', index, name='home'),
+]
