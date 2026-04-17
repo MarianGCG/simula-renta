@@ -7,8 +7,7 @@ SECRET_KEY = 'django-insecure-cambiar-esto'
 
 
 DEBUG = False
-ALLOWED_HOSTS = ['SimulaRenta.onrender.com']
-
+ALLOWED_HOSTS = ['simula-renta.onrender.com', 'localhost', '127.0.0.1']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -64,5 +63,5 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CSRF_TRUSTED_ORIGINS = [
-    "https://tu-app.onrender.com"
+    "https://simula-renta.onrender.com"
 ]
