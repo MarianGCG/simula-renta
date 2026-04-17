@@ -1,7 +1,4 @@
-from django.urls import path
-from . import views
+from django.shortcuts import render
 
-urlpatterns = [
-    path('', views.simulacion_renta, name='simulacion_renta'),
-    path('calcular/', views.calcular, name='simulacion_calcular'),
-]
+def index(request):
+    return render(request, 'index_nuevo.html')
