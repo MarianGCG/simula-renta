@@ -494,6 +494,46 @@ button{
   box-shadow:0 4px 10px rgba(0,0,0,0.05);
 }
 
+.bloque{
+  background:#fff;
+  border-radius:12px;
+  padding:20px;
+  margin-bottom:15px;
+  box-shadow:0 4px 10px rgba(0,0,0,0.05);
+}
+
+.bloque-titulo{
+  font-weight:600;
+  margin-bottom:10px;
+}
+
+.fila{
+  display:flex;
+  gap:20px;
+  flex-wrap:wrap;
+}
+
+.btn-group button{
+  padding:8px 14px;
+  border:1px solid #ccc;
+  background:#fff;
+  border-radius:8px;
+  cursor:pointer;
+}
+
+.btn-group button.active{
+  background:#1a3a6b;
+  color:#fff;
+}
+
+.resultado-grande{
+  background:#243f6b;
+  color:#fff;
+  padding:30px;
+  border-radius:14px;
+  margin-top:20px;
+  text-align:center;
+}
 
 
 </style>
@@ -506,6 +546,7 @@ button{
 <div class="tabs">
   <button class="tab active" onclick="cambiarTab('capital')">Capital inicial</button>
   <button class="tab" onclick="cambiarTab('renta')">Simulación de renta</button>
+  <button class="tab" onclick="cambiarTab('capital2')">Capital inicial 2</button>
 </div>
 
 
@@ -545,7 +586,7 @@ button{
 
 </div>
 
-
+<!-- PESTAÑA Simulación de renta -->
 <div id="tab-renta" class="tab-content">
 
   <div class="header-box">
@@ -649,6 +690,78 @@ button{
   </div> <!-- 👈 cierre de renta-contenido -->
 
 </div>
+
+<!-- PESTAÑA CAPITAL INICIAL 2 -->
+
+<div id="tab-capital2" class="tab-content">
+
+  <div class="header-box">
+    <div class="header-title">Capital Inicial 2</div>
+  </div>
+
+  <!-- MONEDA Y FRECUENCIA -->
+  <div class="bloque">
+
+    <div class="bloque-titulo">Moneda y frecuencia</div>
+
+    <div class="fila">
+
+      <div>
+        <label>Moneda</label>
+        <div class="btn-group">
+          <button onclick="setMoneda('USD')" id="btn-usd">USD</button>
+          <button onclick="setMoneda('ARS')" id="btn-ars">$</button>
+        </div>
+      </div>
+
+      <div>
+        <label>Frecuencia</label>
+        <select id="frecuencia2">
+          <option value="anual">Anual</option>
+          <option value="mensual">Mensual</option>
+        </select>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- INPUTS -->
+  <div class="bloque">
+
+    <div class="fila">
+
+      <div>
+        <label id="label-retiro2">Retiro anual</label>
+        <input type="number" id="monto2" value="40000">
+      </div>
+
+      <div>
+        <label>Años</label>
+        <input type="range" id="anios2" min="1" max="40" value="25">
+        <span id="anios-label2">25</span>
+      </div>
+
+    </div>
+
+    <div>
+      <label>Tasa: <span id="tasa-label2">5%</span></label>
+      <input type="range" id="tasa2" min="0" max="10" step="0.1" value="5">
+    </div>
+
+  </div>
+
+  <!-- RESULTADO -->
+  <div class="resultado-grande" id="resultado-capital2">
+    --
+  </div>
+
+</div>
+
+
+
+
+
 
 
 </div>
@@ -950,25 +1063,38 @@ function abrirPanelDesdeIndice(idx){
 
 function cambiarTab(tab){
 
+  // reset
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
   document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
 
   if(tab === 'capital'){
+
     document.querySelectorAll('.tab')[0].classList.add('active');
     document.getElementById('tab-capital').classList.add('active');
 
     initCapital();
     calcularCapital();
 
-  }else{
+  }else if(tab === 'renta'){
+
     document.querySelectorAll('.tab')[1].classList.add('active');
     document.getElementById('tab-renta').classList.add('active');
 
-    initRenta();   // 👈 🔥 CLAVE
+    initRenta();
+
+  }else if(tab === 'capital2'){
+
+    document.querySelectorAll('.tab')[2].classList.add('active');
+    document.getElementById('tab-capital2').classList.add('active');
+
+    calcularCapital2();  // 👈 tu nueva lógica
+
   }
 
+  // cerrar panel lateral siempre
   document.getElementById('panel-tabla').classList.remove('open');
 }
+
 
 
 function calcularCapital(){
@@ -1211,6 +1337,79 @@ function controlarRenta(){
   cerrarPanel();
 }
 
+
+let moneda2 = "USD";
+
+function setMoneda(m){
+  moneda2 = m;
+
+  document.getElementById("btn-usd").classList.toggle("active", m==="USD");
+  document.getElementById("btn-ars").classList.toggle("active", m==="ARS");
+
+  calcularCapital2();
+}
+
+function actualizarLabel2(){
+  const freq = document.getElementById("frecuencia2").value;
+  const label = document.getElementById("label-retiro2");
+
+  label.innerText = freq === "mensual"
+    ? "Retiro mensual"
+    : "Retiro anual";
+}
+
+function calcularCapital2(){
+
+  const monto = parseFloat(document.getElementById("monto2").value);
+  const anios = parseInt(document.getElementById("anios2").value);
+  const tasa = parseFloat(document.getElementById("tasa2").value) / 100;
+  const freq = document.getElementById("frecuencia2").value;
+
+  document.getElementById("anios-label2").innerText = anios;
+  document.getElementById("tasa-label2").innerText = (tasa*100).toFixed(1) + "%";
+
+  if(!monto || !anios) return;
+
+  let retiroMensual = freq === "mensual"
+    ? monto
+    : monto / 12;
+
+  const r = tasa / 12;
+  const n = anios * 12;
+
+  let capital;
+
+  if(r === 0){
+    capital = retiroMensual * n;
+  }else{
+    capital = retiroMensual * (1 - Math.pow(1 + r, -n)) / r;
+  }
+
+  const simbolo = moneda2 === "USD" ? "US$" : "$";
+
+  document.getElementById("resultado-capital2").innerHTML = `
+    <div>
+      <div style="font-size:14px;opacity:.8">Capital necesario</div>
+      <div style="font-size:36px;font-weight:700">
+        ${simbolo}${Math.round(capital).toLocaleString('es-AR')}
+      </div>
+      <div style="font-size:14px;opacity:.8">
+        ${freq} durante ${anios} años
+      </div>
+    </div>
+  `;
+}
+
+
+["monto2","anios2","tasa2","frecuencia2"].forEach(id=>{
+  const el = document.getElementById(id);
+  if(!el) return;
+
+  el.addEventListener("input", ()=>{
+    actualizarLabel2();
+    calcularCapital2();
+  });
+});
 
 
 </script>
