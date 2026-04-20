@@ -227,10 +227,11 @@ button{
   background:#243f6b;          /* azul oscuro */
   color:#fff;
   border-radius:12px;
-  width:100%;
+  width:fit-content;
+  min-width:400px;
+  margin:auto;
   max-width:1000px;   /* 👈 igual que .container */  
   padding:18px 20px;
-  margin-bottom:20px;
   text-align:center;   /* 👈 centra todo */
 }
 
@@ -510,11 +511,14 @@ button{
   margin-bottom:10px;
 }
 
+
 .fila{
   display:flex;
-  gap:20px;
+  gap:40px;      /* 👈 más separación */
+  justify-content:space-between;  /* 👈 empuja extremos */
   flex-wrap:wrap;
 }
+
 
 .btn-group button{
   padding:8px 14px;
@@ -721,13 +725,16 @@ button{
 
     <div class="fila">
 
-      <div>
-        <label>Moneda</label>
+      <div style="display:flex; align-items:center; gap:10px;">
+        <label style="margin:0;">Moneda</label>
+
         <div class="btn-group">
           <button onclick="setMoneda('USD')" id="btn-usd">USD</button>
           <button onclick="setMoneda('ARS')" id="btn-ars">$</button>
         </div>
       </div>
+
+
 
       <div>
         <label>Frecuencia</label>
@@ -754,6 +761,7 @@ button{
       <div>
         <label>Años</label>
         <input type="range" id="anios2" min="1" max="40" value="25">
+        <input type="number" id="anios2-input" value="25" style="width:60px;">
         <span id="anios-label2">25</span>
       </div>
 
@@ -761,7 +769,8 @@ button{
 
     <div>
       <label>Tasa: <span id="tasa-label2">5%</span></label>
-      <input type="range" id="tasa2" min="0" max="10" step="0.1" value="5">
+      <input type="range" id="tasa2" min="0" max="10" step="45.7" value="5">
+      <input type="number" id="tasa2-input" value="5" step="47.7" style="width:60px;">
     </div>
 
   </div>
@@ -1491,6 +1500,36 @@ function dibujarGraficoCapital2(capital, retiroMensual, tasa, anios){
     }
   });
 }
+
+
+// AÑOS
+const aniosRange = document.getElementById("anios2");
+const aniosInput = document.getElementById("anios2-input");
+
+aniosRange.addEventListener("input", () => {
+  aniosInput.value = aniosRange.value;
+  calcularCapital2();
+});
+
+aniosInput.addEventListener("input", () => {
+  aniosRange.value = aniosInput.value;
+  calcularCapital2();
+});
+
+// TASA
+const tasaRange = document.getElementById("tasa2");
+const tasaInput = document.getElementById("tasa2-input");
+
+tasaRange.addEventListener("input", () => {
+  tasaInput.value = tasaRange.value;
+  calcularCapital2();
+});
+
+tasaInput.addEventListener("input", () => {
+  tasaRange.value = tasaInput.value;
+  calcularCapital2();
+});
+
 
 </script>
 
