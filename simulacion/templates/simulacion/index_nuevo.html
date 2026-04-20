@@ -518,15 +518,27 @@ button{
 
 .btn-group button{
   padding:8px 14px;
-  border:1px solid #ccc;
-  background:#fff;
+  border:1px solid #cbd5e1;
+  background:#e5e7eb;   /* 👈 gris suave (más visible) */
   border-radius:8px;
   cursor:pointer;
+  color:#374151;
+  transition: all 0.2s ease;
+}
+
+.btn-group button:hover{
+  background:#d1d5db;   /* 👈 un poquito más oscuro al pasar */
 }
 
 .btn-group button.active{
   background:#1a3a6b;
   color:#fff;
+  border-color:#1a3a6b;
+}
+
+.btn-group{
+  display:flex;
+  gap:8px;
 }
 
 .resultado-grande{
