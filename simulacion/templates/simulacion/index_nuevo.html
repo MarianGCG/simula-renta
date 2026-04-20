@@ -5,6 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Simulación de Renta (Nuevo)</title>
 
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 {% load static %}
 
 <style>
@@ -753,8 +756,12 @@ button{
 
   <!-- RESULTADO -->
   <div class="resultado-grande" id="resultado-capital2">
+  
     --
   </div>
+  <div style="margin-top:20px;">
+  <canvas id="grafico-capital2"></canvas>
+</div>
 
 </div>
 
@@ -775,7 +782,7 @@ button{
 
 let calculando = false;
 let resultadosActuales = [];
-
+let graficoCapital2 = null;
 
 
 // CSRF (importante para Django)
@@ -1087,9 +1094,11 @@ function cambiarTab(tab){
     document.querySelectorAll('.tab')[2].classList.add('active');
     document.getElementById('tab-capital2').classList.add('active');
 
-    calcularCapital2();  // 👈 tu nueva lógica
-
+    setTimeout(() => {
+      calcularCapital2();
+    }, 50);  // 👈 deja que el DOM respire
   }
+
 
   // cerrar panel lateral siempre
   document.getElementById('panel-tabla').classList.remove('open');
@@ -1398,6 +1407,8 @@ function calcularCapital2(){
       </div>
     </div>
   `;
+
+  dibujarGraficoCapital2(capital, retiroMensual, tasa, anios);
 }
 
 
@@ -1411,6 +1422,63 @@ function calcularCapital2(){
   });
 });
 
+
+function generarSerieCapital(capitalInicial, retiroMensual, tasa, anios){
+
+  let capital = capitalInicial;
+  const datos = [];
+  const labels = [];
+
+  for(let i=0; i<=anios; i++){
+
+    labels.push(i === 0 ? "Inicio" : "Año " + i);
+    datos.push(Math.max(0, capital));
+
+    const interes = capital * tasa;
+    const retiro = retiroMensual * 12;
+
+    capital = capital + interes - retiro;
+  }
+
+  return {labels, datos};
+}
+
+
+function dibujarGraficoCapital2(capital, retiroMensual, tasa, anios){
+
+
+  const canvas = document.getElementById('grafico-capital2');
+  if(!canvas) return;
+  const ctx = canvas.getContext('2d');
+
+
+  const serie = generarSerieCapital(capital, retiroMensual, tasa, anios);
+
+  if(graficoCapital2){
+    graficoCapital2.destroy();
+  }
+
+  graficoCapital2 = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: serie.labels,
+      datasets: [{
+        label: 'Capital restante',
+        data: serie.datos,
+        tension: 0.3,
+        fill: false
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins:{
+        legend:{
+          display:true
+        }
+      }
+    }
+  });
+}
 
 </script>
 
