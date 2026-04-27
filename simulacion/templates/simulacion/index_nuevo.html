@@ -19,11 +19,7 @@ body{
 
 }
 
-.container{
-  max-width:1000px;
-  margin:auto;
-  padding:0 12px;   /* 👈 clave */
-}
+
 
 h2{
   margin-bottom:20px;
@@ -112,29 +108,23 @@ h2{
 }
 
 
-
 .escenario-resultado{
-  width:auto;              /* 👈 clave */
-  background:#ffffff;
-  color:#1a3a6b;
-  border-radius:12px;
-  padding:16px;
+  background:#243f6b;          /* 🔵 azul */
+  color:#fff;
+  border-radius:14px;
+  padding:30px;
 
   display:none;
   opacity:0;
 
-  display:grid;
-  grid-template-columns: repeat(4, auto) 1fr;
-  align-items:center;
-  gap:25px;
+  max-width:1000px;
+  margin:20px auto;
 
-  transition:opacity 0.3s ease;
-  box-shadow:0 4px 10px rgba(0,0,0,0.05);
-  border:2px solid #1a3a6b;
-  min-width:380px;         /* opcional para que no quede muy chica */
-  width:fit-content;       /* 👈 la mejor opción */
+  text-align:center;
+
 
 }
+
 
 
 
@@ -192,7 +182,9 @@ button{
 .container{
   padding:0 12px;
   max-width:1000px;   /* 👈 igual que .container */
+  margin:auto;
 }
+
 
 .btn-calc{
   padding:10px 20px;
@@ -227,11 +219,10 @@ button{
   background:#243f6b;          /* azul oscuro */
   color:#fff;
   border-radius:12px;
-  width:fit-content;
-  min-width:400px;
-  margin:auto;
+  width:100%;
   max-width:1000px;   /* 👈 igual que .container */  
   padding:18px 20px;
+  margin-bottom:20px;
   text-align:center;   /* 👈 centra todo */
 }
 
@@ -243,7 +234,7 @@ button{
 }
 
 .header-subtitle{
-  font-size:13px;
+  font-size:20px;
   opacity:0.85;
 }
 
@@ -254,17 +245,20 @@ button{
   width:100%;
 }
 
+
 .toggle-tabla{
+  color:#1a3a6b !important;   /* 🔥 azul sí o sí */
+  font-weight:600;
   background:none;
   border:none;
-  color:#1a3a6b;
-  font-size:13px;
   cursor:pointer;
-  white-space:nowrap;
+  font-size:14px;
 }
 
+/* opcional hover lindo */
 .toggle-tabla:hover{
   text-decoration:underline;
+  opacity:0.85;
 }
 .tabla-wrap{
   display:none;
@@ -447,6 +441,21 @@ button{
   margin-top:20px;
 }
 
+
+
+
+#tabla-capital th{
+  background:#f4f6fa;
+  padding:10px;
+}
+
+#tabla-capital td{
+  padding:8px 12px;
+  text-align:center;
+}
+
+
+
 #tabla-capital table{
   width:auto;
   border-collapse:collapse;
@@ -457,18 +466,6 @@ button{
   overflow:hidden;
 }
 
-#tabla-capital th{
-  background:#f3f4f6;
-  font-weight:600;
-  color:#374151;
-}
-
-#tabla-capital th,
-#tabla-capital td{
-  padding:6px 10px;
-  border-bottom:1px solid #e5e7eb;
-  text-align:right;
-}
 
 #tabla-capital td:first-child,
 #tabla-capital th:first-child{
@@ -480,26 +477,10 @@ button{
 }
 
 
-.en-construccion{
-  margin-top:40px;
-  text-align:center;
-  font-size:14px;
-  color:#6b7280;
-  margin-bottom:30px;
-  background:#fff;
-  border:2px dashed #9ca3af;
-  border-radius:8px;
-
-  padding:20px;
-  width:fit-content;
-  margin-left:auto;
-  margin-right:auto;
-
-  box-shadow:0 4px 10px rgba(0,0,0,0.05);
-}
-
 .bloque{
   background:#fff;
+  max-width:1100px;
+  margin:auto;
   border-radius:12px;
   padding:20px;
   margin-bottom:15px;
@@ -514,297 +495,442 @@ button{
 
 .fila{
   display:flex;
-  gap:40px;      /* 👈 más separación */
-  justify-content:space-between;  /* 👈 empuja extremos */
-  flex-wrap:wrap;
+  gap:20px;              /* 👈 separa mejor columnas */
+  align-items:flex-start;
+  justify-content:space-between;
+
 }
 
 
-.btn-group button{
-  padding:8px 14px;
-  border:1px solid #cbd5e1;
-  background:#e5e7eb;   /* 👈 gris suave (más visible) */
-  border-radius:8px;
-  cursor:pointer;
-  color:#374151;
-  transition: all 0.2s ease;
-}
-
-.btn-group button:hover{
-  background:#d1d5db;   /* 👈 un poquito más oscuro al pasar */
-}
-
-.btn-group button.active{
-  background:#1a3a6b;
-  color:#fff;
-  border-color:#1a3a6b;
-}
-
+/* opcional: ajuste fino */
 .btn-group{
   display:flex;
   gap:8px;
 }
 
-.resultado-grande{
-  background:#243f6b;
+.btn-group button{
+  background-color: #dbe6f3;
+  color:#1e3a5f;
+  border:none;
+  padding:6px 12px;
+  border-radius:8px;
+  cursor:pointer;
+  transition:all 0.2s;
+}
+
+
+.btn-group button.active {
+  background-color: #1e3a5f;
+  color: white;
+  font-weight:600;
+}
+
+
+
+.btn-group button:hover{
+  opacity:0.85;
+}
+
+
+#btn-usd,
+#btn-ars{
+  font-size:14px;   /* 👈 más chica */
+  padding:6px 12px; /* 👈 más compactos */
+  
+}
+
+
+
+/* BOTONES MONEDA */
+.btn-group:not(.tabs-header) button{
+  padding:6px 12px;
+  font-size:13px;
+  background:#1a3a6b;
   color:#fff;
-  padding:30px;
-  border-radius:14px;
-  margin-top:20px;
+  border:none;
+  border-radius:8px;
+}
+
+.frecuencia-box{
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  margin-left:20px;   /* 👉 mueve a la derecha */
+}
+
+.frecuencia-box select{
+  margin-top:6px;     /* 👉 baja el combo */
+}
+
+.fila-monedas{
+  display:flex;
+  gap:60px;
+  align-items:flex-end 
+}
+
+.col{
+  flex:1;
   text-align:center;
 }
 
+.col:not(:last-child){
+  border-right:1px solid #e5e5e5;
+}
+/* COLUMNA DERECHA */
+.col-detalle{
+  display:flex;
+  flex-direction:column;
+}
+
+/* CADA FLECHA */
+.fila-detalle{
+  height:90px;              /* 🔥 MISMA ALTURA QUE FILA */
+  display:flex;
+  align-items:center;
+  cursor:pointer;
+  color:#1f3a68;
+  font-size:14px;
+}
+
+.titulo{
+  font-size:13px;
+  color:#6b7280;
+}
+
+.valor{
+  font-size:22px;
+  font-weight:700;
+  color:#1f3a68;
+}
+
+/* columnas */
+.fila-monedas .col{
+  display:flex;
+  flex-direction:column;
+}
+
+/* 🔥 CLAVE: fijamos altura de labels */
+.fila-monedas label{
+  margin-top:0/* 👈 sin empujar */
+}
+
+/* BOTONES HEADER (tabs principales) */
+.tabs-header button{
+  padding:12px 22px;
+  font-size:20px;      /* 👈 como pediste */
+  border-radius:10px;
+  border:none;
+  cursor:pointer;
+  background:#1a3a6b;
+  color:#fff;
+}
+
+/* activo */
+.tabs-header button.active{
+  background:#fff;
+  color:#1a3a6b;
+}
+.filtros-capital{
+  max-width:1000px;
+  box-sizing:border-box;   /* 👈 CLAVE */
+}
+
+.filtros-capital .fila{
+  gap:30px;   /* 👈 más prolijo */
+}
+
+.linea-resultado .big{
+  font-size:22px;
+  font-weight:700;
+}
+
+/* contenedor general */
+.resultado-container{
+  display:flex;
+  justify-content:left;   /* centra todo */
+}
+.resultado-wrap{
+  display:flex;
+  align-items:center;
+  gap:8px;              /* 👈 más cerca */
+  justify-content:center;
+}
+
+.resultado-layout{
+  display:flex;
+  align-items:flex-start;
+  justify-content:flex-start;   /* 🔥 clave */
+  gap:15px;   /* 👈 separación mínima */
+  width:100%;
+}
+.resultado-grande{
+  flex:1;
+  width:100%;
+  background:white;              /* 🔥 blanco */
+  border-radius:16px;
+  padding: 25px;
+  max-width:900px;
+  margin:20px 0;
+  border:2px solid #2f4b73;     /* azul borde */
+  box-shadow:0 4px 12px rgba(0,0,0,0.05);
+}
+.resultado-grande-center{
+  background:#243f6b;
+  color:#fff;
+  padding:14px 20px;
+  border-radius:14px;
+  margin:0px auto;
+  max-width:950px;
+  text-align:center;
+  width:auto;
+}
+
+
+
+.linea-resultado{
+  display:flex;
+  align-items:center;
+  height:72px;   /* 🔥 ajustá este valor */
+  border-bottom:1px solid #e5e5e5;
+}
+
+.linea-resultado:last-child{
+  border-bottom:none;
+}
+
+.linea-resultadoBACKUP{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+
+  gap:6px;          /* 👈 espacio entre textos */
+  flex-wrap:wrap;   /* 👈 responsive */
+
+  font-size:16px;   /* 👈 equilibrio visual */
+  margin:10px 0;    /* 👈 separación vertical */
+  line-height:11.6;  /* 👈 clave para alinear con "Detalle años" */
+}
+
+
+/* números */
+.big{
+  font-size:20px;
+  font-weight:700;
+  margin:0 4px;
+}
+
+
+
+
+
+.link-detalle{
+  height:72px;              /* 🔥 igual a fila */
+  display:flex;
+  align-items:center;
+  padding-left:10px;
+  cursor:pointer;
+}
+.link-detalle:hover{
+  text-decoration:underline;
+}
+
+/* columna derecha */
+
+
+.col-detalles{
+  display:flex;
+  flex-direction:column;
+  margin-top:40px;   /* 👈 probá entre 8 y 15 */
+
+}
+
+
+.fila-resultado{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+
+.bloque-inferior{
+  display:flex;
+  gap:30px;
+  margin-top:30px;
+  align-items:flex-start;
+  justify-content:center;
+  flex-wrap:wrap;
+}
+
+#grafico-capital{
+  max-width:500px;
+  height:300px !important;
+}
+
+.filtros-wrapper{
+  display:flex;
+  gap:20px;
+  justify-content:space-between;
+  margin-bottom:20px;
+  width:100%;
+}
+
+/* cada “globo” */
+.filtros-row{
+  display:flex;
+  gap:20px;
+  max-width:1000px;   /* 🔥 MISMO ancho que tu layout */
+  width:100%;
+  margin:0 auto;      /* centra igual que el título */
+}
+
+/* 🔥 CADA BLOQUE */
+.filtro-card{
+  flex:1;                     /* 🔥 LOS 3 IGUALES */
+  background:#f4f7fb;
+  border:1px solid #d6e0ef;
+  border-radius:14px;
+  padding:18px 20px;
+
+  display:flex;
+  align-items:center;         /* 🔥 ALINEA vertical */
+  justify-content:space-between;
+  gap:15px;
+
+  min-height:90px;            /* 🔥 MISMA ALTURA */
+  box-sizing:border-box;
+}
 
 </style>
 
 </head>
-<body>
 
+
+
+<body>
 <div class="container">
 
-<div class="tabs">
-  <button class="tab active" onclick="cambiarTab('capital')">Capital inicial</button>
-  <button class="tab" onclick="cambiarTab('renta')">Simulación de renta</button>
-  <button class="tab" onclick="cambiarTab('capital2')">Capital inicial 2</button>
-</div>
-
-
-<!-- PESTAÑA CAPITAL INICIAL -->
-
-<div id="tab-capital" class="tab-content active">
-  <div class="header-box">
-    <div class="header-title">Capital Inicial</div>
-    <div class="header-subtitle"></div>
-  </div>
-
-
-  <div style="
-    display:flex;
-    gap:20px;
-    margin-bottom:20px;
-    justify-content:center;   /* 👈 centra */
-    align-items:flex-end;     /* 👈 alinea prolijo */
-  ">
-
-
+  <!-- 🔥 HEADER -->
+  <div class="header-box" style="display:grid; grid-template-columns: auto 1fr auto; align-items:center; padding:18px 30px;">
+  
     <div>
-      <label>Retiro mensual</label><br>
-      <select id="combo-retiro"></select>
+      <img src="{% static 'img/Mackinlay.png' %}" style="height:40px;">
     </div>
 
-    <div>
-      <label>Tasa interés (%)</label><br>
-      <input type="number" id="tasa" value="4.75" step="0.01">
+    <div style="display:flex; justify-content:center;">
+      <div class="btn-group tabs-header">
+          <button class="active">Capital inicial</button>
+      </div>
     </div>
 
-  </div>
- 
-  <div id="resultado-capital"></div>
-  <div id="tabla-capital" style="margin-top:20px;"></div>
-
-
-</div>
-
-<!-- PESTAÑA Simulación de renta -->
-<div id="tab-renta" class="tab-content">
-
-  <div class="header-box">
-    <div class="header-title">Simulación de renta</div>
+    <div></div>
   </div>
 
-  <!-- 👇 CARTEL -->
-  <div id="renta-placeholder" class="en-construccion">
-    🚧 Página en construcción
-  </div>
+  <!-- 🔵 ----------------------------------------------------------TAB CAPITAL -->
+  <div id="tab-capital" class="tab-content active">
 
-  <!-- 👇 TODO TU CONTENIDO (envuelto, no borrado) -->
-  <div id="renta-contenido">
+    <div class="filtros-wrapper">
+    <div class="bloque filtros-capital">
 
-      <!-- ESCENARIO 1 -->
-      <div class="escenario-row">
-          <div class="escenario-input">
-          <div class="esc-header">
-              <div class="sc-num">Escenario 1</div>
-              <div class="sc-inputs">
-                  <div class="field">
-                      <label>Capital inicial</label>
-                      <input type="number" class="sc-capital" value="85000">
-                  </div>
-                  <div class="field">
-                      <label>Años de retiro</label>
-                      <input type="number" class="sc-anios" value="1">
-                  </div>
-              </div>
+      <div class="fila" style="display:grid; grid-template-columns: auto 1fr auto; align-items:center; padding:18px 30px;">
+
+        <div class="filtro-card">
+          <div style="margin-left:40px;width:100px;">
+            <label>Frecuencia y Moneda</label>
+            <select id="frecuencia2" onchange="setFrecuencia(this.value)">
+              <option value="anual">Anual</option>
+              <option value="mensual" selected>Mensual</option> <!-- 🔥 -->
+            </select>
           </div>
+        
+
+          <div class="btn-group">
+            <button id="btn-usd" onclick="setMoneda('USD')">USD</button>
+            <button id="btn-ars" onclick="setMoneda('ARS')">$</button>
+
           </div>
-          <div class="escenario-resultado" id="res-1"></div>
-      </div>
 
-      <!-- ESCENARIO 2 -->
-      <div class="escenario-row">
-          <div class="escenario-input">
-          <div class="esc-header">
-              <div class="sc-num">Escenario 2</div>
-              <div class="sc-inputs">
-                  <div class="field">
-                      <label>Capital inicial</label>
-                      <input type="number" class="sc-capital" value="45000">
-                  </div>
-                  <div class="field">
-                      <label>Años de retiro</label>
-                      <input type="number" class="sc-anios" value="1">
-                  </div>
-              </div>
+          <div>
+            <label>Tasa interés (%)</label><br>
+            <input type="number" id="tasa" value="4.75" step="0.01" style="width:60px;">
           </div>
+        </div>
+
+        <div class="filtro-card">        
+          <div style="display:flex; align-items:center; gap:2px;">
+            <label id="label-monto" style="margin:0;">Retiro anual</label>
+            <input type="number" id="monto2" value="2000" style="width:80px;">
           </div>
-          <div class="escenario-resultado" id="res-2"></div>
-      </div>
 
-      <!-- ESCENARIO 3 -->
-      <div class="escenario-row">
-          <div class="escenario-input">
-          <div class="esc-header">
-              <div class="sc-num">Escenario 3</div>
-              <div class="sc-inputs">
-                  <div class="field">
-                      <label>Capital inicial</label>
-                      <input type="number" class="sc-capital" value="41000">
-                  </div>
-                  <div class="field">
-                      <label>Años de retiro</label>
-                      <input type="number" class="sc-anios" value="1">
-                  </div>
-              </div>
+          <div style="display:flex; align-items:center; gap:2px;">
+            <label style="margin:0;">Años</label>
+            <input type="number" id="anios2-input" value="25" style="width:50px;">
           </div>
+        </div>
+
+
+        <div class="filtro-card">
+          <div>
+            <label id="label-combo">Retiro mensual</label>
+            <select id="combo-retiro"></select>
           </div>
-          <div class="escenario-resultado" id="res-3"></div>
-      </div>
-
-      <!-- ESCENARIO 4 -->
-      <div class="escenario-row">
-          <div class="escenario-input">
-          <div class="esc-header">
-              <div class="sc-num">Escenario 4</div>
-              <div class="sc-inputs">
-                  <div class="field">
-                      <label>Capital inicial</label>
-                      <input type="number" class="sc-capital" value="41000">
-                  </div>
-                  <div class="field">
-                      <label>Años de retiro</label>
-                      <input type="number" class="sc-anios" value="1">
-                  </div>
-              </div>
-          </div>
-          </div>
-          <div class="escenario-resultado" id="res-4"></div>
-      </div>
-
-      <div class="acciones">
-        <button onclick="window.print()" class="btn-print">
-        🖨 Imprimir
-        </button>
-      </div>
-
-  </div> <!-- 👈 cierre de renta-contenido -->
-
-</div>
-
-<!-- PESTAÑA CAPITAL INICIAL 2 -->
-
-<div id="tab-capital2" class="tab-content">
-
-  <div class="header-box">
-    <div class="header-title">Capital Inicial 2</div>
-  </div>
-
-  <!-- MONEDA Y FRECUENCIA -->
-  <div class="bloque">
-
-    <div class="bloque-titulo">Moneda y frecuencia</div>
-
-    <div class="fila">
-
-      <div style="display:flex; align-items:center; gap:10px;">
-        <label style="margin:0;">Moneda</label>
-
-        <div class="btn-group">
-          <button onclick="setMoneda('USD')" id="btn-usd">USD</button>
-          <button onclick="setMoneda('ARS')" id="btn-ars">$</button>
         </div>
       </div>
 
+    </div>
+    </div>
 
+    <div id="resultado-capital"></div>
 
-      <div>
-        <label>Frecuencia</label>
-        <select id="frecuencia2">
-          <option value="anual">Anual</option>
-          <option value="mensual">Mensual</option>
-        </select>
+    <div class="bloque-inferior">
+      <div id="tabla-capital" style="margin-top:20px;"></div>
+      <!-- 🔥 GRÁFICO -->
+      <div style="margin-top:20px;">
+        <canvas id="grafico-capital"></canvas>
       </div>
-
+    </div>
     </div>
 
   </div>
-
-  <!-- INPUTS -->
-  <div class="bloque">
-
-    <div class="fila">
-
-      <div>
-        <label id="label-retiro2">Retiro anual</label>
-        <input type="number" id="monto2" value="40000">
-      </div>
-
-      <div>
-        <label>Años</label>
-        <input type="range" id="anios2" min="1" max="40" value="25">
-        <input type="number" id="anios2-input" value="25" style="width:60px;">
-        <span id="anios-label2">25</span>
-      </div>
-
-    </div>
-
-    <div>
-      <label>Tasa: <span id="tasa-label2">5%</span></label>
-      <input type="range" id="tasa2" min="0" max="10" step="45.7" value="5">
-      <input type="number" id="tasa2-input" value="5" step="47.7" style="width:60px;">
-    </div>
-
-  </div>
-
-  <!-- RESULTADO -->
-  <div class="resultado-grande" id="resultado-capital2">
   
-    --
-  </div>
-  <div style="margin-top:20px;">
-  <canvas id="grafico-capital2"></canvas>
 </div>
-
-</div>
-
-
-
-
-
-
-
-</div>
-
-
-
 
 <script>
-
-
-
+let modoActivo = "manual"; // "manual" o "combo"
 let calculando = false;
+let frecuenciaSeleccionada = "mensual"; // 🔥 default
 let resultadosActuales = [];
-let graficoCapital2 = null;
+let monedaSeleccionada = "USD";
 
+function setMoneda(m){
+
+  monedaSeleccionada = m;
+
+  const btnUsd = document.getElementById("btn-usd");
+  const btnArs = document.getElementById("btn-ars");
+
+  if(btnUsd && btnArs){
+    btnUsd.classList.toggle("active", m === "USD");
+    btnArs.classList.toggle("active", m === "ARS");
+  }
+
+  actualizarLabelsMoneda();   // 🔥 NUEVO
+  calcularCapital();
+}
+function setFrecuencia(f){
+  frecuenciaSeleccionada = f;
+  calcularCapital();
+}
+
+function actualizarLabelsMoneda(){
+
+  const simbolo = monedaSeleccionada === "USD" ? "US$" : "$";
+
+  // ejemplo: podés actualizar placeholders o textos si querés
+  const labelMonto = document.getElementById("label-monto");
+  if(labelMonto){
+    labelMonto.textContent = labelMonto.textContent.replace(/US\$|\$/g, simbolo);
+  }
+}
 
 // CSRF (importante para Django)
 function getCsrfToken() {
@@ -869,39 +995,31 @@ async function calcular(){
 
 
       container.innerHTML = `
-      <div class="res-wrapper">
 
-        <div class="res-content">
+      <div style="text-align:center; width:100%;">
 
-          <div class="res-item">
-            <div class="res-title">Capital</div>
-            <div class="res-value">${fmt(esc.capital)}</div>
-          </div>
-
-          <div class="res-item mensual">
-            <div class="res-title">Años</div>
-            <div class="res-value">${esc.anios}</div>
-          </div>
-
-          <div class="res-item mensual">
-            <div class="res-title">Retiro anual</div>
-            <div class="res-value">${fmt(esc.retiro_anual)}</div>
-          </div>
-
-          <div class="res-item mensual">
-            <div class="res-title">Retiro mensual</div>
-            <div class="res-value">${fmt(esc.retiro_mensual)}</div>
-          </div>
-
+        <div style="font-size:14px;opacity:.8">
+          Capital necesario
         </div>
 
-        <!-- BOTÓN -->
+        <div style="font-size:36px;font-weight:700; margin:6px 0;">
+          ${fmt(esc.capital)}
+        </div>
+
+        <div style="font-size:14px;opacity:.8">
+          durante ${esc.anios} años
+        </div>
+
+        <div style="margin-top:10px;font-size:13px;opacity:.9">
+          Retiro mensual ${fmt(esc.retiro_mensual)}
+        </div>
+
         <button class="toggle-tabla" onclick='abrirPanelDesdeIndice(${idx})'>
-          ▶ Ver años
+          ▶ Ver detalle años
         </button>
 
-
       </div>
+
 
       <!-- TABLA -->
       <div class="tabla-wrap" id="tabla-${idx}">
@@ -1089,122 +1207,230 @@ function abrirPanelDesdeIndice(idx){
   abrirPanel(resultadosActuales[idx].tabla);
 }
 
-function cambiarTab(tab){
-
-  // reset
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-
-  if(tab === 'capital'){
-
-    document.querySelectorAll('.tab')[0].classList.add('active');
-    document.getElementById('tab-capital').classList.add('active');
-
-    initCapital();
-    calcularCapital();
-
-  }else if(tab === 'renta'){
-
-    document.querySelectorAll('.tab')[1].classList.add('active');
-    document.getElementById('tab-renta').classList.add('active');
-
-    initRenta();
-
-  }else if(tab === 'capital2'){
-
-    document.querySelectorAll('.tab')[2].classList.add('active');
-    document.getElementById('tab-capital2').classList.add('active');
-
-    setTimeout(() => {
-      calcularCapital2();
-    }, 50);  // 👈 deja que el DOM respire
-  }
-
-
-  // cerrar panel lateral siempre
-  document.getElementById('panel-tabla').classList.remove('open');
-}
-
-
 
 function calcularCapital(){
 
+
+  const montoInput = parseFloat(document.getElementById("monto2")?.value);
+  const aniosInput = parseInt(document.getElementById("anios2-input")?.value);
+
+  let monto, aniosLista;
+
   const idx = document.getElementById("combo-retiro").value;
-  if(idx === "") return;
-  const combo = combos[idx];
-  if(!combo) return;
-  const tasa = parseFloat(document.getElementById("tasa").value) / 100;
+
+  if(modoActivo === "combo" && idx !== ""){
+
+    const combo = combos[idx];
+    if(!combo) return;
+
+    monto = combo.retira;
+    aniosLista = combo.anios; // 🔥 ARRAY COMPLETO
+
+  }else{
+
+    const montoInput = parseFloat(document.getElementById("monto2")?.value);
+    const aniosInput = parseInt(document.getElementById("anios2-input")?.value);
+
+    if(isNaN(montoInput) || isNaN(aniosInput)) return;
+
+    monto = montoInput;
+    aniosLista = [aniosInput]; // 🔥 SOLO 1
+  }
+
+
+
+  const tasaAnual = parseFloat(document.getElementById("tasa").value) / 100;
   const cont = document.getElementById("resultado-capital");
 
-  let html = `<div class="capital-card">`;
+  const simbolo = monedaSeleccionada === "USD" ? "US$" : "$";
 
-  combo.anios.forEach(anio => {
+  const frecuencia = document.getElementById("frecuencia2").value;
+  const textoFrecuencia = frecuencia === "mensual" ? "mensual" : "anual";
 
-    const r = tasa / 12;
-    const n = anio * 12;
 
-    let capital;
+  let html = `
+    <div class="resultado-layout">
 
-    if(r === 0){
-      capital = combo.retira * n;
-    }else{
-      capital = combo.retira * (1 - Math.pow(1 + r, -n)) / r;
-    }
+      <!-- 🔵 GLOBO -->
+      <div class="resultado-grande">
+  `;
+ 
+  aniosLista.forEach(anio => {
+    const capital = calcularCapitalInterno(monto, tasaAnual, anio, frecuencia);
 
+  html += `
+    <div class="linea-resultado">
+      <div class="col">
+        <div class="titulo">Para un Retiro ${textoFrecuencia} de </div>
+        <div class="valor">${simbolo}${monto.toLocaleString('es-AR')}</div>
+      </div>
+
+      <div class="col">
+        <div class="titulo">durante </div>
+        <div class="titulo"></div>
+        <div class="titulo"></div>
+        <div class="valor">${anio} años</div>
+      </div>
+
+      <div class="col">
+        <div class="titulo">el Capital necesario es de </div>
+        <div class="valor">${simbolo}${Math.round(capital).toLocaleString('es-AR')}</div>
+      </div>
+
+    </div>
+  `;
+
+  });
+
+  html += `
+      </div>
+
+      <!-- 👉 DETALLES AFUERA -->
+      <div class="col-detalles">
+  `;
+
+ 
+  aniosLista.forEach(anio => {
+    
+    const capital = calcularCapitalInterno(monto, tasaAnual, anio, frecuencia);
+    
     html += `
-      <div class="capital-row">
-
-        <div class="res-item mensual">
-          <div class="res-title">Retiro mensual</div>
-          <div class="res-value">$${combo.retira.toLocaleString('es-AR')}</div>
-        </div>
-
-        <div class="res-item mensual">
-          <div class="res-title">Años</div>
-          <div class="res-value">${anio}</div>
-        </div>
-
-        <div class="res-item">
-          <div class="res-title">Capital</div>
-          <div class="res-value">$${Math.round(capital).toLocaleString('es-AR')}</div>
-        </div>
-
-        <button class="toggle-tabla"
-          onclick="mostrarDetalle(${capital}, ${combo.retira}, ${tasa}, ${anio})">
-          ▶ Detalle años
-        </button>
-
+      <div class="link-detalle"
+        onclick="mostrarDetalle(${capital}, ${monto}, ${tasaAnual}, ${anio}, '${frecuencia}')">
+        ▶ Detalle    
       </div>
     `;
   });
 
-  html += `</div>`;
+  html += `
+      </div>
+
+    <div class="detalle-container">
+
+  `;
 
   cont.innerHTML = html;
+  // mostrar primero (sirve para ambos modos)
+  if(aniosLista.length > 0){
 
-
-  // 👇 mostrar automáticamente el primero
-  if(combo.anios.length > 0){
-
-    const anio = combo.anios[0];
-
-    const r = tasa / 12;
-    const n = anio * 12;
-
-    let capital;
-
-    if(r === 0){
-      capital = combo.retira * n;
-    }else{
-      capital = combo.retira * (1 - Math.pow(1 + r, -n)) / r;
-    }
-
-    mostrarDetalle(capital, combo.retira, tasa, anio);
+    const anio = aniosLista[0];
+    const capital = calcularCapitalInterno(monto, tasaAnual, anio, frecuencia);
+    mostrarDetalle(capital, monto, tasaAnual, anio, frecuencia);
   }
-
+  // 🔥 AGREGA ESTO
+  actualizarLabel2();
+  actualizarLabelCombo();
 }
 
 
+function calcularCapitalInterno(monto, tasaAnual, anio, frecuencia){
+
+  let r, n;
+
+  if(frecuencia === "mensual"){
+    r = tasaAnual / 12;
+    n = anio * 12;
+  }else{
+    r = tasaAnual;
+    n = anio;
+  }
+
+  if(r === 0){
+    return monto * n;
+  }
+
+  return monto * (1 - Math.pow(1 + r, -n)) / r;
+}
+
+
+
+function setMoneda(moneda){
+
+  monedaSeleccionada = moneda;
+
+  // 🎨 activar botón
+  document.getElementById("btn-usd")?.classList.toggle("active", moneda === "USD");
+  document.getElementById("btn-ars")?.classList.toggle("active", moneda === "ARS");
+
+  calcularCapital(); // 🔥 SIEMPRE recalcula
+}
+
+
+function setFrecuencia(valor){
+
+  frecuenciaSeleccionada = valor;
+  actualizarLabel2();
+  actualizarLabelCombo();   // 🔥 NUEVO
+  calcularCapital();
+}
+
+
+function actualizarLabel2(){
+
+  const select = document.getElementById("frecuencia2");
+  if(!select) return;
+
+  const frecuencia = select.value;  // 🔥 SIEMPRE REAL
+
+  const texto = frecuencia === "mensual"
+    ? "Retiro mensual"
+    : "Retiro anual";
+
+  const labelMonto = document.getElementById("label-monto");
+  const labelCombo = document.getElementById("label-combo");
+
+  if(labelMonto){
+    labelMonto.textContent = texto;
+  }
+
+  if(labelCombo){
+    labelCombo.textContent = texto;
+  }
+}
+
+function actualizarLabelCombo(){
+
+  const frecuencia = document.getElementById("frecuencia2").value;
+
+  const labelCombo = document.getElementById("label-combo");
+
+  if(labelCombo){
+    labelCombo.textContent = frecuencia === "mensual"
+      ? "Retiro mensual"
+      : "Retiro anual";
+  }
+}
+
+
+
+function generarGrafico(tabla){
+
+  const labels = tabla.map(r => r.anio);
+  const capital = tabla.map(r => r.capital_fin);
+
+  
+  const ctx = document.getElementById("grafico-capital")?.getContext("2d");
+  if(!ctx) return;
+
+  if(window.graficoCapital){
+    window.graficoCapital.destroy();
+  }
+
+  window.graficoCapital = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: labels,
+      datasets: [{
+        label: 'Capital',
+        data: capital,
+        tension: 0.3
+      }]
+    },
+    options: {
+      responsive: true
+    }
+  });
+}
 
 function initCapital(){
 
@@ -1228,58 +1454,19 @@ function initCapital(){
 
 
 const combos = [
-  {nombre:"500 en 5", retira:500, anios:[5]},
-  {nombre:"500 en 10", retira:500, anios:[10]},
-  {nombre:"500 en 15", retira:500, anios:[15]},
-  {nombre:"500 en 20", retira:500, anios:[20]},
   {nombre:"500 en 5/10/15/20", retira:500, anios:[5,10,15,20]},
-
-  {nombre:"800 en 5", retira:800, anios:[5]},
-  {nombre:"800 en 10", retira:800, anios:[10]},
-  {nombre:"800 en 15", retira:800, anios:[15]},
-  {nombre:"800 en 20", retira:800, anios:[20]},
   {nombre:"800 en 5/10/15/20", retira:800, anios:[5,10,15,20]},
-
-  {nombre:"1000 en 5", retira:1000, anios:[5]},
-  {nombre:"1000 en 10", retira:1000, anios:[10]},
-  {nombre:"1000 en 15", retira:1000, anios:[15]},
-  {nombre:"1000 en 20", retira:1000, anios:[20]},
   {nombre:"1000 en 5/10/15/20", retira:1000, anios:[5,10,15,20]},
-  
-  {nombre:"1500 en 5", retira:1500, anios:[5]},
-  {nombre:"1500 en 10", retira:1500, anios:[10]},
-  {nombre:"1500 en 15", retira:1500, anios:[15]},
-  {nombre:"1500 en 20", retira:1500, anios:[20]},
   {nombre:"1500 en 5/10/15/20", retira:1500, anios:[5,10,15,20]},
-
-  {nombre:"2000 en 5", retira:2000, anios:[5]},
-  {nombre:"2000 en 10", retira:2000, anios:[10]},
-  {nombre:"2000 en 15", retira:2000, anios:[15]},
-  {nombre:"2000 en 20", retira:2000, anios:[20]},
   {nombre:"2000 en 5/10/15/20", retira:2000, anios:[5,10,15,20]}
-
 ];
 
 
-function initRenta(){
 
-  document.querySelectorAll('.sc-capital, .sc-anios').forEach(input => {
-
-    input.addEventListener('keydown', function(e){
-      if(e.key === 'Enter'){
-        e.preventDefault();
-        calcularWrapper();
-      }
-    });
-
-    input.addEventListener('blur', calcularWrapper);
-
-  });
-
-}
-
-
-function generarTablaCapital(capitalInicial, retiroMensual, tasa, anios){
+function generarTablaCapital(capitalInicial, retiro, tasa, anios, frecuencia){
+  
+  console.log("DETALLE → frecuencia:", frecuencia);
+  console.log("DETALLE → retiro:", retiro);
 
   let capital = capitalInicial;
 
@@ -1300,15 +1487,23 @@ function generarTablaCapital(capitalInicial, retiroMensual, tasa, anios){
   for(let i=1; i<=anios; i++){
 
     const interes = capital * tasa;
-    const retiro = retiroMensual * 12;
-    const capitalFin = capital + interes - retiro;
+
+    let retiroPeriodo;
+
+    if(frecuencia && frecuencia.toLowerCase().trim() === "mensual"){
+      retiroPeriodo = retiro * 12;
+    }else{
+      retiroPeriodo = retiro;
+    }
+
+    const capitalFin = capital + interes - retiroPeriodo;
 
     html += `
       <tr class="${capitalFin < 0 ? 'negative-row' : ''}">
         <td>${i}</td>
         <td>$${Math.round(capital).toLocaleString('es-AR')}</td>
         <td>$${Math.round(interes).toLocaleString('es-AR')}</td>
-        <td>$${Math.round(retiro).toLocaleString('es-AR')}</td>
+        <td>$${Math.round(retiroPeriodo).toLocaleString('es-AR')}</td>
         <td class="${capitalFin < 0 ? 'negative' : ''}">
           $${Math.round(capitalFin).toLocaleString('es-AR')}
         </td>
@@ -1324,124 +1519,84 @@ function generarTablaCapital(capitalInicial, retiroMensual, tasa, anios){
 }
 
 
-
-function mostrarDetalle(capital, retiro, tasa, anios){
-  generarTablaCapital(capital, retiro, tasa, anios);
+function mostrarDetalle(capital, retiro, tasa, anios, frecuencia){
+  generarTablaCapital(capital, retiro, tasa, anios, frecuencia);
 }
-
 
 
 window.addEventListener("DOMContentLoaded", () => {
 
-  const comboSelect = document.getElementById("combo-retiro");
-  if (!comboSelect) return;
+  // 🔥 frecuencia default
+  const selectFrecuencia = document.getElementById("frecuencia2");
+  if(selectFrecuencia){
+    selectFrecuencia.value = "mensual";
+  }
 
-  comboSelect.innerHTML = "";   // 👈 limpia antes
-  
-  combos.forEach((c, i)=>{
-    const opt = document.createElement("option");
-    opt.value = i;
-    opt.textContent = c.nombre;
-    comboSelect.appendChild(opt);
+  // 🔥 cargar combo
+  const comboSelect = document.getElementById("combo-retiro");
+
+  if(comboSelect){
+    comboSelect.innerHTML = `<option value="">Seleccionar...</option>`;
+
+    combos.forEach((c, i)=>{
+      const opt = document.createElement("option");
+      opt.value = i;
+      opt.textContent = c.nombre;
+      comboSelect.appendChild(opt);
+    });
+  }
+
+  // 🔥 INPUTS → modo manual
+  document.getElementById("monto2")?.addEventListener("change", () => {
+    modoActivo = "manual";
+    document.getElementById("combo-retiro").value = "";
+    calcularCapital();
   });
 
-  comboSelect.selectedIndex = 0;
+  document.getElementById("anios2-input")?.addEventListener("change", () => {
+    modoActivo = "manual";
+    document.getElementById("combo-retiro").value = "";
+    calcularCapital();
+  });
 
-  initCapital();
-  calcularCapital();
-  controlarRenta();
+  document.getElementById("tasa")?.addEventListener("input", calcularCapital);
 
+  document.getElementById("frecuencia2")?.addEventListener("change", (e)=>{
+    setFrecuencia(e.target.value);
+  });
+
+  // 🔥 COMBO → modo combo
+  document.getElementById("combo-retiro")?.addEventListener("change", () => {
+
+    const idx = document.getElementById("combo-retiro").value;
+    if(idx === "") return;
+
+    modoActivo = "combo"; // 🔥 CLAVE
+
+    calcularCapital();
+  });
+
+  // 🔥 estado inicial
+  setMoneda("USD");
+  setFrecuencia("mensual");
 });
 
 
-const MODO_RENTA_ACTIVO = false;
-
-function controlarRenta(){
-
-  const placeholder = document.getElementById("renta-placeholder");
-  const contenido = document.getElementById("renta-contenido");
-
-  placeholder.style.display = "block";
-  contenido.style.display = "none";
-
-  cerrarPanel();
-}
 
 
-let moneda2 = "USD";
 
-function setMoneda(m){
-  moneda2 = m;
 
-  document.getElementById("btn-usd").classList.toggle("active", m==="USD");
-  document.getElementById("btn-ars").classList.toggle("active", m==="ARS");
-
-  calcularCapital2();
-}
 
 function actualizarLabel2(){
-  const freq = document.getElementById("frecuencia2").value;
-  const label = document.getElementById("label-retiro2");
 
-  label.innerText = freq === "mensual"
+  const label = document.getElementById("label-monto");
+
+  if(!label) return;
+
+  label.textContent = frecuenciaSeleccionada === "mensual"
     ? "Retiro mensual"
     : "Retiro anual";
 }
-
-function calcularCapital2(){
-
-  const monto = parseFloat(document.getElementById("monto2").value);
-  const anios = parseInt(document.getElementById("anios2").value);
-  const tasa = parseFloat(document.getElementById("tasa2").value) / 100;
-  const freq = document.getElementById("frecuencia2").value;
-
-  document.getElementById("anios-label2").innerText = anios;
-  document.getElementById("tasa-label2").innerText = (tasa*100).toFixed(1) + "%";
-
-  if(!monto || !anios) return;
-
-  let retiroMensual = freq === "mensual"
-    ? monto
-    : monto / 12;
-
-  const r = tasa / 12;
-  const n = anios * 12;
-
-  let capital;
-
-  if(r === 0){
-    capital = retiroMensual * n;
-  }else{
-    capital = retiroMensual * (1 - Math.pow(1 + r, -n)) / r;
-  }
-
-  const simbolo = moneda2 === "USD" ? "US$" : "$";
-
-  document.getElementById("resultado-capital2").innerHTML = `
-    <div>
-      <div style="font-size:14px;opacity:.8">Capital necesario</div>
-      <div style="font-size:36px;font-weight:700">
-        ${simbolo}${Math.round(capital).toLocaleString('es-AR')}
-      </div>
-      <div style="font-size:14px;opacity:.8">
-        ${freq} durante ${anios} años
-      </div>
-    </div>
-  `;
-
-  dibujarGraficoCapital2(capital, retiroMensual, tasa, anios);
-}
-
-
-["monto2","anios2","tasa2","frecuencia2"].forEach(id=>{
-  const el = document.getElementById(id);
-  if(!el) return;
-
-  el.addEventListener("input", ()=>{
-    actualizarLabel2();
-    calcularCapital2();
-  });
-});
 
 
 function generarSerieCapital(capitalInicial, retiroMensual, tasa, anios){
@@ -1463,73 +1618,6 @@ function generarSerieCapital(capitalInicial, retiroMensual, tasa, anios){
 
   return {labels, datos};
 }
-
-
-function dibujarGraficoCapital2(capital, retiroMensual, tasa, anios){
-
-
-  const canvas = document.getElementById('grafico-capital2');
-  if(!canvas) return;
-  const ctx = canvas.getContext('2d');
-
-
-  const serie = generarSerieCapital(capital, retiroMensual, tasa, anios);
-
-  if(graficoCapital2){
-    graficoCapital2.destroy();
-  }
-
-  graficoCapital2 = new Chart(ctx, {
-    type: 'line',
-    data: {
-      labels: serie.labels,
-      datasets: [{
-        label: 'Capital restante',
-        data: serie.datos,
-        tension: 0.3,
-        fill: false
-      }]
-    },
-    options: {
-      responsive: true,
-      plugins:{
-        legend:{
-          display:true
-        }
-      }
-    }
-  });
-}
-
-
-// AÑOS
-const aniosRange = document.getElementById("anios2");
-const aniosInput = document.getElementById("anios2-input");
-
-aniosRange.addEventListener("input", () => {
-  aniosInput.value = aniosRange.value;
-  calcularCapital2();
-});
-
-aniosInput.addEventListener("input", () => {
-  aniosRange.value = aniosInput.value;
-  calcularCapital2();
-});
-
-// TASA
-const tasaRange = document.getElementById("tasa2");
-const tasaInput = document.getElementById("tasa2-input");
-
-tasaRange.addEventListener("input", () => {
-  tasaInput.value = tasaRange.value;
-  calcularCapital2();
-});
-
-tasaInput.addEventListener("input", () => {
-  tasaRange.value = tasaInput.value;
-  calcularCapital2();
-});
-
 
 </script>
 
