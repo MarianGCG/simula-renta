@@ -734,7 +734,7 @@ button{
 .bloque-inferior{
   display:flex;
   gap:30px;
-  margin-top:30px;
+  margin-top:10px;
   align-items:flex-start;
   justify-content:center;
   flex-wrap:wrap;
@@ -813,7 +813,7 @@ button{
       <div class="fila" style="display:grid; grid-template-columns: auto 1fr auto; align-items:center; padding:18px 30px;">
 
         <div class="filtro-card">
-          <div style="margin-left:40px;width:100px;">
+          <div style="margin-left:30px;width:100px;">
             <label>Frecuencia y Moneda</label>
             <select id="frecuencia2" onchange="setFrecuencia(this.value)">
               <option value="anual">Anual</option>
@@ -825,7 +825,6 @@ button{
           <div class="btn-group">
             <button id="btn-usd" onclick="setMoneda('USD')">USD</button>
             <button id="btn-ars" onclick="setMoneda('ARS')">$</button>
-
           </div>
 
           <div>
@@ -861,9 +860,9 @@ button{
     <div id="resultado-capital"></div>
 
     <div class="bloque-inferior">
-      <div id="tabla-capital" style="margin-top:20px;"></div>
+      <div id="tabla-capital" style="margin-top:10px;"></div>
       <!-- 🔥 GRÁFICO -->
-      <div style="margin-top:20px;">
+      <div style="margin-top:10px;">
         <canvas id="grafico-capital"></canvas>
       </div>
     </div>
