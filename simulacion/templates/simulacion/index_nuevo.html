@@ -480,11 +480,17 @@ button{
 
 }
 
+.filtros-wrapper {
+  padding: 0 30px;   /* igual que el header */
+  box-sizing: border-box;
+}
+
 
 /* opcional: ajuste fino */
 .btn-group{
   display:flex;
-  gap:8px;
+  gap:10px;
+  margin-left: 10px;
 }
 
 .btn-group button{
@@ -534,8 +540,11 @@ button{
   display:flex;
   flex-direction:column;
   align-items:flex-start;
-  margin-left:20px;   /* 👉 mueve a la derecha */
+  margin-left:10px;   /* 👉 mueve a la derecha */
+  min-width: 120px;
 }
+
+
 
 .frecuencia-box select{
   margin-top:6px;     /* 👉 baja el combo */
@@ -773,11 +782,13 @@ button{
   display:flex;
   align-items:center;         /* 🔥 ALINEA vertical */
   justify-content:space-between;
-  gap:15px;
+  gap:20px;
 
   min-height:90px;            /* 🔥 MISMA ALTURA */
   box-sizing:border-box;
 }
+
+
 
 </style>
 
@@ -813,7 +824,7 @@ button{
       <div class="fila" style="display:grid; grid-template-columns: auto 1fr auto; align-items:center; padding:18px 30px;">
 
         <div class="filtro-card">
-          <div style="margin-left:60px;width:100px;">
+          <div class="frecuencia-box">
             <label>Frecuencia y Moneda</label>
             <select id="frecuencia2" onchange="setFrecuencia(this.value)">
               <option value="anual">Anual</option>
