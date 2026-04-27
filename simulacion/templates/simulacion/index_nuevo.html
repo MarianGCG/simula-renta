@@ -20,7 +20,6 @@ body{
 }
 
 
-
 h2{
   margin-bottom:20px;
   font-size:24px;   /* probá 24 o 26 */
@@ -122,13 +121,7 @@ h2{
 
   text-align:center;
 
-
 }
-
-
-
-
-
 
 .res-block{
   display:flex;
@@ -139,7 +132,6 @@ h2{
   font-size:11px;
   color:#6b7280;   /* gris elegante */
 }
-
 
 .res-value{
   font-size:18px;
@@ -156,7 +148,6 @@ h2{
 }
 
 
-
 button{
   margin-top:20px;
   padding:10px 20px;
@@ -167,9 +158,6 @@ button{
   cursor:pointer;
 }
 
-
-
-
 .acciones{
   display:flex;
   justify-content:space-between;
@@ -178,13 +166,11 @@ button{
   padding:0 50px;   /* probá entre 8px y 16px */
 }
 
-
 .container{
   padding:0 12px;
   max-width:1000px;   /* 👈 igual que .container */
   margin:auto;
 }
-
 
 .btn-calc{
   padding:10px 20px;
@@ -205,7 +191,6 @@ button{
   display:none;   /* 👈 oculto */
   gap:0px;  
   margin-left:auto;   /* 👈 ESTA es la clave */
-
 }
 
 .esc-header{
@@ -226,7 +211,6 @@ button{
   text-align:center;   /* 👈 centra todo */
 }
 
-
 .header-title{
   font-size:20px;
   font-weight:700;
@@ -245,7 +229,6 @@ button{
   width:100%;
 }
 
-
 .toggle-tabla{
   color:#1a3a6b !important;   /* 🔥 azul sí o sí */
   font-weight:600;
@@ -260,11 +243,11 @@ button{
   text-decoration:underline;
   opacity:0.85;
 }
+
 .tabla-wrap{
   display:none;
   margin-top:10px;
 }
-
 
 .panel-tabla{
   position:fixed;
@@ -285,14 +268,10 @@ button{
   flex-direction:column;
 }
 
-
-
-
 .panel-tabla.open{
   
   right:calc((100vw - 1000px)/2 - 400px);
 }
-
 
 .panel-header{
   display:flex;
@@ -903,25 +882,6 @@ let frecuenciaSeleccionada = "mensual"; // 🔥 default
 let resultadosActuales = [];
 let monedaSeleccionada = "USD";
 
-function setMoneda(m){
-
-  monedaSeleccionada = m;
-
-  const btnUsd = document.getElementById("btn-usd");
-  const btnArs = document.getElementById("btn-ars");
-
-  if(btnUsd && btnArs){
-    btnUsd.classList.toggle("active", m === "USD");
-    btnArs.classList.toggle("active", m === "ARS");
-  }
-
-  actualizarLabelsMoneda();   // 🔥 NUEVO
-  calcularCapital();
-}
-function setFrecuencia(f){
-  frecuenciaSeleccionada = f;
-  calcularCapital();
-}
 
 function actualizarLabelsMoneda(){
 
@@ -1346,16 +1306,23 @@ function calcularCapitalInterno(monto, tasaAnual, anio, frecuencia){
 
 
 
-function setMoneda(moneda){
 
-  monedaSeleccionada = moneda;
+function setMoneda(m){
 
-  // 🎨 activar botón
-  document.getElementById("btn-usd")?.classList.toggle("active", moneda === "USD");
-  document.getElementById("btn-ars")?.classList.toggle("active", moneda === "ARS");
+  monedaSeleccionada = m;
 
-  calcularCapital(); // 🔥 SIEMPRE recalcula
+  const btnUsd = document.getElementById("btn-usd");
+  const btnArs = document.getElementById("btn-ars");
+
+  if(btnUsd && btnArs){
+    btnUsd.classList.toggle("active", m === "USD");
+    btnArs.classList.toggle("active", m === "ARS");
+  }
+
+  actualizarLabelsMoneda();   // 🔥 NUEVO
+  calcularCapital();
 }
+
 
 
 function setFrecuencia(valor){
@@ -1366,29 +1333,6 @@ function setFrecuencia(valor){
   calcularCapital();
 }
 
-
-function actualizarLabel2(){
-
-  const select = document.getElementById("frecuencia2");
-  if(!select) return;
-
-  const frecuencia = select.value;  // 🔥 SIEMPRE REAL
-
-  const texto = frecuencia === "mensual"
-    ? "Retiro mensual"
-    : "Retiro anual";
-
-  const labelMonto = document.getElementById("label-monto");
-  const labelCombo = document.getElementById("label-combo");
-
-  if(labelMonto){
-    labelMonto.textContent = texto;
-  }
-
-  if(labelCombo){
-    labelCombo.textContent = texto;
-  }
-}
 
 function actualizarLabelCombo(){
 
@@ -1454,10 +1398,10 @@ const combos = [
   {nombre:"800 en 5/10/15/20", retira:800, anios:[5,10,15,20]},
   {nombre:"1000 en 5/10/15/20", retira:1000, anios:[5,10,15,20]},
   {nombre:"1500 en 5/10/15/20", retira:1500, anios:[5,10,15,20]},
-  {nombre:"2000 en 5/10/15/20", retira:2000, anios:[5,10,15,20]}
-  {nombre:"2500 en 5/10/15/20", retira:2500, anios:[5,10,15,20]}
-  {nombre:"3000 en 5/10/15/20", retira:3000, anios:[5,10,15,20]}
-  {nombre:"3500 en 5/10/15/20", retira:3500, anios:[5,10,15,20]}
+  {nombre:"2000 en 5/10/15/20", retira:2000, anios:[5,10,15,20]},
+  {nombre:"2500 en 5/10/15/20", retira:2500, anios:[5,10,15,20]},
+  {nombre:"3000 en 5/10/15/20", retira:3000, anios:[5,10,15,20]},
+  {nombre:"3500 en 5/10/15/20", retira:3500, anios:[5,10,15,20]},
   {nombre:"4000 en 5/10/15/20", retira:4000, anios:[5,10,15,20]}
 
 ];
@@ -1468,6 +1412,7 @@ function generarTablaCapital(capitalInicial, retiro, tasa, anios, frecuencia){
   
  
   let capital = capitalInicial;
+  let datosGrafico = [];
 
   let html = `
     <table>
@@ -1597,16 +1542,32 @@ window.addEventListener("DOMContentLoaded", () => {
 
 
 
+
 function actualizarLabel2(){
 
-  const label = document.getElementById("label-monto");
+  const select = document.getElementById("frecuencia2");
+  if(!select) return;
 
-  if(!label) return;
+  const frecuencia = select.value;  // 🔥 SIEMPRE REAL
 
-  label.textContent = frecuenciaSeleccionada === "mensual"
+  const texto = frecuencia === "mensual"
     ? "Retiro mensual"
     : "Retiro anual";
+
+  const labelMonto = document.getElementById("label-monto");
+  const labelCombo = document.getElementById("label-combo");
+
+  if(labelMonto){
+    labelMonto.textContent = texto;
+  }
+
+  if(labelCombo){
+    labelCombo.textContent = texto;
+  }
 }
+
+
+
 
 
 function generarSerieCapital(capitalInicial, retiroMensual, tasa, anios){
