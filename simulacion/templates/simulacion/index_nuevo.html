@@ -1404,32 +1404,26 @@ function actualizarLabelCombo(){
 }
 
 
+let grafico;
 
-function generarGrafico(tabla){
+function generarGrafico(datos){
 
-  const labels = tabla.map(r => r.anio);
-  const capital = tabla.map(r => r.capital_fin);
+  const ctx = document.getElementById('grafico-capital').getContext('2d');
 
-  
-  const ctx = document.getElementById("grafico-capital")?.getContext("2d");
-  if(!ctx) return;
-
-  if(window.graficoCapital){
-    window.graficoCapital.destroy();
+  if(grafico){
+    grafico.destroy();
   }
 
-  window.graficoCapital = new Chart(ctx, {
+  grafico = new Chart(ctx, {
     type: 'line',
     data: {
-      labels: labels,
+      labels: datos.map(d => d.anio),
       datasets: [{
         label: 'Capital',
-        data: capital,
+        data: datos.map(d => d.capital),
+        borderWidth: 2,
         tension: 0.3
       }]
-    },
-    options: {
-      responsive: true
     }
   });
 }
@@ -1461,15 +1455,18 @@ const combos = [
   {nombre:"1000 en 5/10/15/20", retira:1000, anios:[5,10,15,20]},
   {nombre:"1500 en 5/10/15/20", retira:1500, anios:[5,10,15,20]},
   {nombre:"2000 en 5/10/15/20", retira:2000, anios:[5,10,15,20]}
+  {nombre:"2500 en 5/10/15/20", retira:2500, anios:[5,10,15,20]}
+  {nombre:"3000 en 5/10/15/20", retira:3000, anios:[5,10,15,20]}
+  {nombre:"3500 en 5/10/15/20", retira:3500, anios:[5,10,15,20]}
+  {nombre:"4000 en 5/10/15/20", retira:4000, anios:[5,10,15,20]}
+
 ];
 
 
 
 function generarTablaCapital(capitalInicial, retiro, tasa, anios, frecuencia){
   
-  console.log("DETALLE → frecuencia:", frecuencia);
-  console.log("DETALLE → retiro:", retiro);
-
+ 
   let capital = capitalInicial;
 
   let html = `
@@ -1500,6 +1497,14 @@ function generarTablaCapital(capitalInicial, retiro, tasa, anios, frecuencia){
 
     const capitalFin = capital + interes - retiroPeriodo;
 
+
+    // 🔥 GUARDAMOS PARA EL GRÁFICO
+    datosGrafico.push({
+      anio: i,
+      capital: capitalFin
+    });
+
+
     html += `
       <tr class="${capitalFin < 0 ? 'negative-row' : ''}">
         <td>${i}</td>
@@ -1518,6 +1523,9 @@ function generarTablaCapital(capitalInicial, retiro, tasa, anios, frecuencia){
   html += "</tbody></table>";
 
   document.getElementById("tabla-capital").innerHTML = html;
+  // 🔥 ESTA ES LA CLAVE
+  generarGrafico(datosGrafico);
+
 }
 
 
