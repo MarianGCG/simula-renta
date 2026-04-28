@@ -850,8 +850,8 @@ button{
         
 
           <div class="btn-group">
-            <button id="btn-usd" onclick="setMoneda('USD')">USD</button>
-            <button id="btn-ars" onclick="setMoneda('ARS')">$</button>
+            <button id="btn-usd" onclick="setMoneda('USD'); calcularCapital()">USD</button>
+            <button id="btn-ars" onclick="setMoneda('ARS'); calcularCapital()">$</button>
           </div>
 
           <div>
@@ -1362,11 +1362,6 @@ function setMoneda(m){
     btnUsd.style.color = "#1f3b63";
   }
 
-  // 🔥 volver a calcular (ahora seguro)
-  if(document.getElementById("monto2")){
-    calcularCapital();
-  }
-  
 
 }
 
