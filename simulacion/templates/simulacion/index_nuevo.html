@@ -457,6 +457,11 @@ button{
   border-bottom:none;
 }
 
+#tasa{
+  margin-left: 15px;   /* probá 10 / 15 / 20 */
+  margin-top: 5px;   /* probá 10 / 15 / 20 */
+  
+}
 
 .bloque{
   background:#fff;
@@ -492,6 +497,7 @@ button{
 .btn-group{
   display:flex;
   gap:25px;
+
 }
 
 .btn-group button{
@@ -502,7 +508,7 @@ button{
   border-radius: 6px;
   cursor:pointer;
   transition:all 0.2s ease;
-  
+  margin-top: 14px;   /* probá 10 / 15 / 20 */
   
 }
 
@@ -797,14 +803,16 @@ button{
 
   display:flex;
   align-items:center;         /* 🔥 ALINEA vertical */
-  justify-content:space-between;
-  gap:20px;
+  justify-content:flex-start;  
+  gap:8px;
 
   min-height:90px;            /* 🔥 MISMA ALTURA */
   box-sizing:border-box;
 }
 
-
+.filtro-card > * {
+  margin-right: 20px;
+}
 
 </style>
 
@@ -824,7 +832,7 @@ button{
 
     <div style="display:flex; justify-content:center;">
       <div class="btn-group tabs-header">
-          <button class="active">Capital inicial</button>
+          <button class="active">Capital Necesario</button>
       </div>
     </div>
 
@@ -861,24 +869,15 @@ button{
         </div>
 
         <div class="filtro-card">        
-          <div style="display:flex; align-items:center; gap:2px;">
+          <div style="display:flex; align-items:center; gap:20px;">
             <label id="label-monto" style="margin:0;">Retiro anual</label>
             <input type="number" id="monto2" value="2000" style="width:80px;">
           </div>
 
-          <div style="display:flex; align-items:center; gap:2px;">
-            <label style="margin:0;">Años</label>
-            <input type="number" id="anios2-input" value="25" style="width:50px;">
-          </div>
+
         </div>
 
 
-        <div class="filtro-card">
-          <div>
-            <label id="label-combo">Retiro mensual</label>
-            <select id="combo-retiro"></select>
-          </div>
-        </div>
       </div>
 
     </div>
@@ -886,15 +885,7 @@ button{
 
     <div id="resultado-capital"></div>
 
-    <div class="bloque-inferior">
-      <div id="tabla-capital" style="margin-top:10px;"></div>
-      <!-- 🔥 GRÁFICO -->
-      <div style="margin-top:10px;">
-        <canvas id="grafico-capital"></canvas>
-      </div>
-    </div>
-
-    
+  
     </div>
 
   </div>
@@ -902,7 +893,7 @@ button{
 </div>
 
 <script>
-let modoActivo = "manual"; // "manual" o "combo"
+
 let calculando = false;
 let frecuenciaSeleccionada = "mensual"; // 🔥 default
 let resultadosActuales = [];
@@ -1195,39 +1186,13 @@ function abrirPanelDesdeIndice(idx){
   abrirPanel(resultadosActuales[idx].tabla);
 }
 
-
 function calcularCapital(){
 
-
-  const montoInput = parseFloat(document.getElementById("monto2")?.value);
-  const aniosInput = parseInt(document.getElementById("anios2-input")?.value);
-
-  let monto, aniosLista;
-
-  const idx = document.getElementById("combo-retiro").value;
-
-  if(modoActivo === "combo" && idx !== ""){
-
-    const combo = combos[idx];
-    if(!combo) return;
-
-    monto = combo.retira;
-    aniosLista = combo.anios; // 🔥 ARRAY COMPLETO
-
-  }else{
-
-    const montoInput = parseFloat(document.getElementById("monto2")?.value);
-    const aniosInput = parseInt(document.getElementById("anios2-input")?.value);
-
-    if(isNaN(montoInput) || isNaN(aniosInput)) return;
-
-    monto = montoInput;
-    aniosLista = [aniosInput]; // 🔥 SOLO 1
-  }
-
-
-
+  const monto = parseFloat(document.getElementById("monto2").value);
   const tasaAnual = parseFloat(document.getElementById("tasa").value) / 100;
+
+  if(isNaN(monto) || isNaN(tasaAnual)) return;
+
   const cont = document.getElementById("resultado-capital");
 
   const simbolo = monedaSeleccionada === "USD" ? "US$" : "$";
@@ -1235,79 +1200,47 @@ function calcularCapital(){
   const frecuencia = document.getElementById("frecuencia2").value;
   const textoFrecuencia = frecuencia === "mensual" ? "mensual" : "anual";
 
+  const aniosLista = [5, 10, 15, 20]; // 🔥 fijo
 
   let html = `
     <div class="resultado-layout">
-
-      <!-- 🔵 GLOBO -->
       <div class="resultado-grande">
   `;
- 
+
   aniosLista.forEach(anio => {
+
     const capital = calcularCapitalInterno(monto, tasaAnual, anio, frecuencia);
 
-  html += `
-    <div class="linea-resultado">
-      <div class="col">
-        <div class="titulo">Para un Retiro ${textoFrecuencia} de </div>
-        <div class="valor">${simbolo}${monto.toLocaleString('es-AR')}</div>
-      </div>
-
-      <div class="col">
-        <div class="titulo">durante </div>
-        <div class="titulo"></div>
-        <div class="titulo"></div>
-        <div class="valor">${anio} años</div>
-      </div>
-
-      <div class="col">
-        <div class="titulo">el Capital necesario es de </div>
-        <div class="valor">${simbolo}${Math.round(capital).toLocaleString('es-AR')}</div>
-      </div>
-
-    </div>
-  `;
-
-  });
-
-  html += `
-      </div>
-
-      <!-- 👉 DETALLES AFUERA -->
-      <div class="col-detalles">
-  `;
-
- 
-  aniosLista.forEach(anio => {
-    
-    const capital = calcularCapitalInterno(monto, tasaAnual, anio, frecuencia);
-    
     html += `
-      <div class="link-detalle"
-        onclick="mostrarDetalle(${capital}, ${monto}, ${tasaAnual}, ${anio}, '${frecuencia}')">
-        ▶ Detalle    
+      <div class="linea-resultado">
+
+        <div class="col">
+          <div class="titulo">Retiro ${textoFrecuencia}</div>
+          <div class="valor">${simbolo}${monto.toLocaleString('es-AR')}</div>
+        </div>
+
+        <div class="col">
+          <div class="titulo">Plazo</div>
+          <div class="valor">${anio} años</div>
+        </div>
+
+        <div class="col">
+          <div class="titulo">Capital necesario</div>
+          <div class="valor">${simbolo}${Math.round(capital).toLocaleString('es-AR')}</div>
+        </div>
+
       </div>
     `;
   });
 
   html += `
       </div>
-
-    <div class="detalle-container">
-
+    </div>
   `;
 
   cont.innerHTML = html;
-  // mostrar primero (sirve para ambos modos)
-  if(aniosLista.length > 0){
 
-    const anio = aniosLista[0];
-    const capital = calcularCapitalInterno(monto, tasaAnual, anio, frecuencia);
-    mostrarDetalle(capital, monto, tasaAnual, anio, frecuencia);
-  }
-  // 🔥 AGREGA ESTO
-  actualizarLabel2();
-  actualizarLabelCombo();
+  actualizarLabel2(); // ✔ esto sí queda
 }
 
 
@@ -1417,7 +1350,7 @@ function generarGrafico(datos){
 
 function initCapital(){
 
-  const combo = document.getElementById("combo-retiro");
+ 
   const tasaInput = document.getElementById("tasa");
 
   if(!combo || !tasaInput) return;
@@ -1451,76 +1384,6 @@ const combos = [
 
 
 
-function generarTablaCapital(capitalInicial, retiro, tasa, anios, frecuencia){
-  
- 
-  let capital = capitalInicial;
-  let datosGrafico = [];
-
-  let html = `
-    <table>
-      <thead>
-        <tr>
-          <th>Año</th>
-          <th>Capital inicio</th>
-          <th>Interés</th>
-          <th>Retiro</th>
-          <th>Capital fin</th>
-        </tr>
-      </thead>
-      <tbody>
-  `;
-
-  for(let i=1; i<=anios; i++){
-
-    const interes = capital * tasa;
-
-    let retiroPeriodo;
-
-    if(frecuencia && frecuencia.toLowerCase().trim() === "mensual"){
-      retiroPeriodo = retiro * 12;
-    }else{
-      retiroPeriodo = retiro;
-    }
-
-    const capitalFin = capital + interes - retiroPeriodo;
-
-
-    // 🔥 GUARDAMOS PARA EL GRÁFICO
-    datosGrafico.push({
-      anio: i,
-      capital: capitalFin
-    });
-
-
-    html += `
-      <tr class="${capitalFin < 0 ? 'negative-row' : ''}">
-        <td>${i}</td>
-        <td>$${Math.round(capital).toLocaleString('es-AR')}</td>
-        <td>$${Math.round(interes).toLocaleString('es-AR')}</td>
-        <td>$${Math.round(retiroPeriodo).toLocaleString('es-AR')}</td>
-        <td class="${capitalFin < 0 ? 'negative' : ''}">
-          $${Math.round(capitalFin).toLocaleString('es-AR')}
-        </td>
-      </tr>
-    `;
-
-    capital = capitalFin;
-  }
-
-  html += "</tbody></table>";
-
-  document.getElementById("tabla-capital").innerHTML = html;
-  // 🔥 ESTA ES LA CLAVE
-  generarGrafico(datosGrafico);
-
-}
-
-
-function mostrarDetalle(capital, retiro, tasa, anios, frecuencia){
-  generarTablaCapital(capital, retiro, tasa, anios, frecuencia);
-}
-
 
 window.addEventListener("DOMContentLoaded", () => {
 
@@ -1530,53 +1393,18 @@ window.addEventListener("DOMContentLoaded", () => {
     selectFrecuencia.value = "mensual";
   }
 
-  // 🔥 cargar combo
-  const comboSelect = document.getElementById("combo-retiro");
-
-  if(comboSelect){
-    comboSelect.innerHTML = `<option value="">Seleccionar...</option>`;
-
-    combos.forEach((c, i)=>{
-      const opt = document.createElement("option");
-      opt.value = i;
-      opt.textContent = c.nombre;
-      comboSelect.appendChild(opt);
-    });
-  }
-
-  // 🔥 INPUTS → modo manual
-  document.getElementById("monto2")?.addEventListener("change", () => {
-    modoActivo = "manual";
-    document.getElementById("combo-retiro").value = "";
-    calcularCapital();
-  });
-
-  document.getElementById("anios2-input")?.addEventListener("change", () => {
-    modoActivo = "manual";
-    document.getElementById("combo-retiro").value = "";
-    calcularCapital();
-  });
 
   document.getElementById("tasa")?.addEventListener("input", calcularCapital);
+  document.getElementById("monto2")?.addEventListener("input", calcularCapital); // 🔥 ESTE FALTABA
 
   document.getElementById("frecuencia2")?.addEventListener("change", (e)=>{
     setFrecuencia(e.target.value);
   });
 
-  // 🔥 COMBO → modo combo
-  document.getElementById("combo-retiro")?.addEventListener("change", () => {
-
-    const idx = document.getElementById("combo-retiro").value;
-    if(idx === "") return;
-
-    modoActivo = "combo"; // 🔥 CLAVE
-
-    calcularCapital();
-  });
-
   // 🔥 estado inicial
   setMoneda("USD");
   setFrecuencia("mensual");
+  calcularCapital(); // 🔥 👈 ACÁ
 });
 
 
