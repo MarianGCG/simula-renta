@@ -81,7 +81,7 @@ h2{
   margin-bottom:6px;
   border:1px solid #ccc;
   border-radius:6px;
-  font-size:17px;
+  font-size:16px;
 }
 
 /* RESULTADO */
@@ -148,9 +148,11 @@ h2{
 }
 
 
+
+
 button{
-  margin-top:20px;
-  padding:10px 20px;
+  margin-top:33px;
+  padding:8px 20px;
   background:#1a3a6b;
   color:#fff;
   border:none;
@@ -168,7 +170,7 @@ button{
 
 .container{
   padding:0 12px;
-  max-width:100%;   /* 👈 igual que .container */
+  max-width:1000px;   /* 👈 igual que .container */
   margin:auto;
 }
 
@@ -481,7 +483,6 @@ button{
 }
 
 .filtros-wrapper {
-  width: 100%;
   padding: 0 30px;   /* igual que el header */
   box-sizing: border-box;
 }
@@ -490,58 +491,72 @@ button{
 /* opcional: ajuste fino */
 .btn-group{
   display:flex;
-  gap:10px;
-  margin-left: 5px;
+  gap:25px;
 }
 
 .btn-group button{
-  background-color: #dbe6f3;
-  color:#1e3a5f;
-  border:none;
+  background: #fff;        /* no seleccionada */
+  color: #1f3b63;
+  border: 1px solid #1f3b63;
   padding:6px 12px;
-  border-radius:8px;
+  border-radius: 6px;
   cursor:pointer;
-  transition:all 0.2s;
+  transition:all 0.2s ease;
+  
+  
 }
 
 
 .btn-group button.active {
-  background-color: #1e3a5f;
+  background-color: #1f3b63;
   color: white;
-  font-weight:600;
+  font-weight:400;
 }
+
+
+
+
+
 
 
 
 .btn-group button:hover{
-  opacity:0.85;
+  opacity:0.5;
 }
 
 
+.btn-group button.active:hover {
+  opacity: 1;
+}
+
 #btn-usd,
 #btn-ars{
-  font-size:14px;   /* 👈 más chica */
-  padding:6px 12px; /* 👈 más compactos */
-  
+  font-size:12px;   /* 👈 más chica */
+  padding:6px 20px; /* 👈 más compactos */  
+  width: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;  /* 👈 centra horizontal */
 }
 
 
 
 /* BOTONES MONEDA */
 .btn-group:not(.tabs-header) button{
-  padding:6px 12px;
-  font-size:13px;
+  padding:6px 20px;
+  font-size:12px;
   background:#1a3a6b;
   color:#fff;
   border:none;
   border-radius:8px;
+  margin-left:-20px;   /* 👉 mueve a la derecha */
 }
 
 .frecuencia-box{
   display:flex;
   flex-direction:column;
   align-items:flex-start;
-  margin-left:10px;   /* 👉 mueve a la derecha */
+  margin-left:5px;   /* 👉 mueve a la derecha */
   min-width: 120px;
 }
 
@@ -841,7 +856,7 @@ button{
 
           <div>
             <label>Tasa interés (%)</label><br>
-            <input type="number" id="tasa" value="4.75" step="0.01" style="width:60px;">
+            <input type="number" id="tasa" value="4.75" step="0.01" style="width:50px;">
           </div>
         </div>
 
@@ -892,7 +907,7 @@ let calculando = false;
 let frecuenciaSeleccionada = "mensual"; // 🔥 default
 let resultadosActuales = [];
 let monedaSeleccionada = "USD";
-
+setMoneda("USD");
 
 function actualizarLabelsMoneda(){
 
@@ -983,7 +998,7 @@ async function calcular(){
           durante ${esc.anios} años
         </div>
 
-        <div style="margin-top:10px;font-size:15px;opacity:.9">
+        <div style="margin-top:10px;font-size:13px;opacity:.9">
           Retiro mensual ${fmt(esc.retiro_mensual)}
         </div>
 
@@ -1325,14 +1340,31 @@ function setMoneda(m){
   const btnUsd = document.getElementById("btn-usd");
   const btnArs = document.getElementById("btn-ars");
 
-  if(btnUsd && btnArs){
-    btnUsd.classList.toggle("active", m === "USD");
-    btnArs.classList.toggle("active", m === "ARS");
+  if(m === "USD"){
+    btnUsd.classList.add("active");
+    btnArs.classList.remove("active");
+
+    // 🔥 forzar visual
+    btnUsd.style.background = "#1f3b63";
+    btnUsd.style.color = "#fff";
+
+    btnArs.style.background = "#fff";
+    btnArs.style.color = "#1f3b63";
+
+  } else {
+    btnArs.classList.add("active");
+    btnUsd.classList.remove("active");
+
+    btnArs.style.background = "#1f3b63";
+    btnArs.style.color = "#fff";
+
+    btnUsd.style.background = "#fff";
+    btnUsd.style.color = "#1f3b63";
   }
 
-  actualizarLabelsMoneda();   // 🔥 NUEVO
-  calcularCapital();
+
 }
+
 
 
 
@@ -1600,6 +1632,8 @@ function generarSerieCapital(capitalInicial, retiroMensual, tasa, anios){
 
   return {labels, datos};
 }
+
+
 
 </script>
 
